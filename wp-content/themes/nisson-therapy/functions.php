@@ -74,7 +74,7 @@ function nisson_therapy_scripts() {
 add_action( 'wp_enqueue_scripts', 'nisson_therapy_scripts' );
 
 /**
- * Enqueue block editor styles
+ * Enqueue block editor styles and scripts
  */
 function nisson_therapy_editor_styles() {
 	$theme_version = wp_get_theme()->get( 'Version' );
@@ -102,6 +102,15 @@ function nisson_therapy_editor_styles() {
 		array(),
 		$theme_version
 	);
+
+	// Block editor JavaScript for debugging
+	wp_enqueue_script(
+		'nisson-therapy-block-editor',
+		get_template_directory_uri() . '/assets/js/block-editor.js',
+		array( 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' ),
+		$theme_version,
+		true
+	);
 }
 add_action( 'enqueue_block_editor_assets', 'nisson_therapy_editor_styles' );
 
@@ -110,15 +119,27 @@ add_action( 'enqueue_block_editor_assets', 'nisson_therapy_editor_styles' );
  * Must run early to ensure category exists before blocks register
  */
 function nisson_therapy_block_category( $categories, $editor_context ) {
-	// Always add the category, not just when post exists
-	array_unshift(
-		$categories,
-		array(
-			'slug'  => 'nisson-therapy',
-			'title' => __( 'Nisson Therapy Blocks', 'nisson-therapy' ),
-			'icon'  => null,
-		)
-	);
+	// Check if category already exists
+	$category_exists = false;
+	foreach ( $categories as $category ) {
+		if ( isset( $category['slug'] ) && $category['slug'] === 'nisson-therapy' ) {
+			$category_exists = true;
+			break;
+		}
+	}
+
+	// Add category if it doesn't exist
+	if ( ! $category_exists ) {
+		array_unshift(
+			$categories,
+			array(
+				'slug'  => 'nisson-therapy',
+				'title' => __( 'Nisson Therapy Blocks', 'nisson-therapy' ),
+				'icon'  => null,
+			)
+		);
+	}
+
 	return $categories;
 }
 add_filter( 'block_categories_all', 'nisson_therapy_block_category', 10, 2 );
@@ -143,36 +164,49 @@ function nisson_therapy_register_acf_blocks() {
 	}
 
 	// Hero Block - using completely new unique name
-	$block_result = acf_register_block_type(
-		array(
-			'name'            => 'nt-hero-section',
-			'title'           => __( '🎯 Hero Section', 'nisson-therapy' ),
-			'description'     => __( 'Hero section with parallax background image. Perfect for landing pages.', 'nisson-therapy' ),
-			'render_template' => $template_file,
-			'category'        => 'nisson-therapy',
-			'icon'            => 'cover-image',
-			'keywords'        => array( 'hero', 'banner', 'parallax', 'landing', 'nisson', 'therapy' ),
-			'supports'        => array(
-				'align' => false,
-				'anchor' => true,
-			),
-			'enqueue_style'   => get_template_directory_uri() . '/blocks/hero/hero.css',
-			'mode'            => 'preview',
-			'example'         => array(
-				'attributes' => array(
-					'mode' => 'preview',
-					'data' => array(
-						'subheadline'      => 'Telehealth for New York, New Jersey, Florida, and Oregon',
-						'headline'         => 'Time to See Yourself In A Different',
-						'highlighted_text' => 'Light?',
-						'button_text'      => 'Learn more',
-						'button_link'      => '#',
-						'enable_parallax'  => true,
-					),
+	$block_args = array(
+		'name'            => 'nt-hero-section',
+		'title'           => __( '🎯 Hero Section', 'nisson-therapy' ),
+		'description'     => __( 'Hero section with parallax background image. Perfect for landing pages.', 'nisson-therapy' ),
+		'render_template' => $template_file,
+		'category'        => 'nisson-therapy',
+		'icon'            => 'cover-image',
+		'keywords'        => array( 'hero', 'banner', 'parallax', 'landing', 'nisson', 'therapy' ),
+		'supports'        => array(
+			'align' => false,
+			'anchor' => true,
+		),
+		'enqueue_style'   => get_template_directory_uri() . '/blocks/hero/hero.css',
+		'mode'            => 'preview',
+		'example'         => array(
+			'attributes' => array(
+				'mode' => 'preview',
+				'data' => array(
+					'subheadline'      => 'Telehealth for New York, New Jersey, Florida, and Oregon',
+					'headline'         => 'Time to See Yourself In A Different',
+					'highlighted_text' => 'Light?',
+					'button_text'      => 'Learn more',
+					'button_link'      => '#',
+					'enable_parallax'  => true,
 				),
 			),
-		)
+		),
 	);
+
+	// Register the block
+	$block_result = acf_register_block_type( $block_args );
+
+	// Also register with WordPress block registry directly (backup method)
+	if ( function_exists( 'register_block_type' ) && $block_result ) {
+		// This ensures WordPress also knows about the block
+		register_block_type(
+			'acf/nt-hero-section',
+			array(
+				'render_callback' => 'acf_render_block_callback',
+				'attributes'     => isset( $block_result['attributes'] ) ? $block_result['attributes'] : array(),
+			)
+		);
+	}
 
 	// Always log registration result
 	if ( $block_result ) {
@@ -370,6 +404,15 @@ function nisson_therapy_admin_notice() {
 			<strong>Block Name:</strong> <code>acf/nt-hero-section</code><br>
 			<strong>Category:</strong> <code>nisson-therapy</code><br>
 			<strong>Template:</strong> <code><?php echo esc_html( str_replace( ABSPATH, '', $template_file ) ); ?></code>
+		</p>
+		<p style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;">
+			<strong>🔍 Troubleshooting:</strong><br>
+			1. Open a page/post in the editor<br>
+			2. Press <code>F12</code> to open browser console<br>
+			3. Look for messages starting with "Nisson Therapy:"<br>
+			4. Try searching for "Hero" or "nt-hero-section" in the block inserter<br>
+			5. Clear browser cache and reload the editor<br>
+			6. Check if the block appears when you type "/hero" in the editor
 		</p>
 	</div>
 	<?php
