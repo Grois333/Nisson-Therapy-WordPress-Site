@@ -17,13 +17,19 @@ jobs:
         with:
           fetch-depth: 0
       
-      - name: List theme files (debug)
+      - name: List files to be deployed (debug)
         run: |
-          echo "Checking for theme files..."
+          echo "=== Themes directory ==="
           ls -la wp-content/themes/ || echo "themes directory not found"
-          find wp-content/themes -name "nisson-therapy" -type d || echo "nisson-therapy theme not found"
-          echo "Files in repository:"
-          find . -type f -not -path "./.git/*" -not -path "./.github/*" | head -20
+          echo ""
+          echo "=== Plugins directory ==="
+          ls -la wp-content/plugins/ || echo "plugins directory not found"
+          echo ""
+          echo "=== Counting files in themes ==="
+          find wp-content/themes -type f | wc -l || echo "0"
+          echo ""
+          echo "=== Counting files in plugins ==="
+          find wp-content/plugins -type f | wc -l || echo "0"
       
       - name: Deploy to FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -32,10 +38,11 @@ jobs:
           username: u682875833
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /domains/ntillimpsychotherapy.com/public_html/
+          log-level: verbose
+          dangerous-clean-slate: true
           exclude: |
             **/.git*
             **/.git*/**
-            **/.github/**
             **/.github/**
             **/.cursorrules
             **/.gitignore
@@ -55,7 +62,13 @@ jobs:
             **/local-xdebuginfo.php
             **/wp-config.php
             **/wp-config-sample.php
-            **/wp-content/themes/twenty*/**
+            **/wp-content/themes/twenty*/
+            **/wp-content/themes/twentytwenty*/
+            **/wp-content/themes/twentytwentyone/**
+            **/wp-content/themes/twentytwentytwo/**
+            **/wp-content/themes/twentytwentythree/**
+            **/wp-content/themes/twentytwentyfour/**
+            **/wp-content/themes/twentytwentyfive/**
             **/wp-content/uploads/**
             **/wp-content/cache/**
             **/wp-content/debug.log
