@@ -37,7 +37,7 @@ jobs:
           server: 194.36.184.144
           username: u682875833
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./wp-content
+          local-dir: ./wp-content/
           server-dir: /domains/ntillimpsychotherapy.com/public_html/wp-content/
           log-level: verbose
           dangerous-clean-slate: false
