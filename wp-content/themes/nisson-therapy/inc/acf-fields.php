@@ -74,6 +74,16 @@ function nisson_therapy_register_hero_fields() {
 					'default_value' => '',
 				),
 				array(
+					'key'           => 'field_nt_hero_philosophy_line',
+					'label'         => 'Philosophy Line',
+					'name'          => 'philosophy_line',
+					'type'          => 'text',
+					'instructions'  => 'Text to display after the button (e.g., "Explore your inner world safely, with curiosity and compassion for all parts of you.")',
+					'required'      => 0,
+					'default_value' => 'Explore your inner world safely, with curiosity and compassion for all parts of you.',
+					'placeholder'   => 'Explore your inner world safely, with curiosity and compassion for all parts of you.',
+				),
+				array(
 					'key'           => 'field_nt_hero_background_image',
 					'label'         => 'Background Image',
 					'name'          => 'background_image',

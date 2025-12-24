@@ -258,6 +258,7 @@ add_filter( 'acf/settings/load_json', '__return_false' );
 
 /**
  * Admin notice to verify ACF Pro and block registration
+ * Only shows if there are issues
  */
 function nisson_therapy_admin_notice() {
 	// Only show on admin pages
@@ -265,27 +266,26 @@ function nisson_therapy_admin_notice() {
 		return;
 	}
 
+	// Check if user has dismissed the notice
+	$dismissed = get_user_meta( get_current_user_id(), 'nisson_therapy_notice_dismissed', true );
+	if ( $dismissed ) {
+		return;
+	}
+
 	$notices = array();
+	$has_errors = false;
 
 	// Check 1: Is ACF Pro installed?
 	if ( ! class_exists( 'ACF' ) ) {
+		$has_errors = true;
 		$notices[] = array(
 			'type' => 'error',
 			'message' => 'ACF (Advanced Custom Fields) plugin is NOT installed or activated. Custom blocks require ACF Pro.',
 		);
 	} else {
-		$notices[] = array(
-			'type' => 'success',
-			'message' => '✓ ACF plugin is installed and active.',
-		);
-		
 		// Check if it's actually the Pro version
-		if ( defined( 'ACF_PRO' ) && ACF_PRO ) {
-			$notices[] = array(
-				'type' => 'success',
-				'message' => '✓ ACF Pro version confirmed (ACF_PRO constant is true).',
-			);
-		} else {
+		if ( ! defined( 'ACF_PRO' ) || ! ACF_PRO ) {
+			$has_errors = true;
 			$notices[] = array(
 				'type' => 'warning',
 				'message' => '⚠ ACF_PRO constant not set. This might be the free version, which does not support blocks.',
@@ -295,28 +295,20 @@ function nisson_therapy_admin_notice() {
 
 	// Check 2: Is ACF Pro (not just free version)?
 	if ( ! function_exists( 'acf_register_block_type' ) ) {
+		$has_errors = true;
 		$notices[] = array(
 			'type' => 'error',
 			'message' => 'ACF PRO is required for blocks. The free version does not support blocks. Please install ACF Pro.',
-		);
-	} else {
-		$notices[] = array(
-			'type' => 'success',
-			'message' => '✓ ACF Pro block functions are available.',
 		);
 	}
 
 	// Check 3: Is the theme active?
 	$current_theme = wp_get_theme();
 	if ( $current_theme->get( 'Name' ) !== 'Nisson Therapy' ) {
+		$has_errors = true;
 		$notices[] = array(
 			'type' => 'warning',
 			'message' => 'Current theme is: ' . $current_theme->get( 'Name' ) . '. Nisson Therapy theme must be activated for blocks to work.',
-		);
-	} else {
-		$notices[] = array(
-			'type' => 'success',
-			'message' => '✓ Nisson Therapy theme is active.',
 		);
 	}
 
@@ -325,32 +317,19 @@ function nisson_therapy_admin_notice() {
 		$block_name = 'acf/nt-hero-section';
 		$block_registered = acf_has_block_type( $block_name );
 		
-		if ( $block_registered ) {
-			$notices[] = array(
-				'type' => 'success',
-				'message' => '✓ Hero block is registered: ' . $block_name,
-			);
-		} else {
+		if ( ! $block_registered ) {
+			$has_errors = true;
 			$notices[] = array(
 				'type' => 'error',
 				'message' => '✗ Hero block is NOT registered. Block name: ' . $block_name,
 			);
 		}
-	} else {
-		$notices[] = array(
-			'type' => 'warning',
-			'message' => 'Cannot check block registration - acf_has_block_type() function not available.',
-		);
 	}
 
 	// Check 5: Does template file exist?
 	$template_file = get_template_directory() . '/blocks/hero/hero.php';
-	if ( file_exists( $template_file ) ) {
-		$notices[] = array(
-			'type' => 'success',
-			'message' => '✓ Hero block template file exists.',
-		);
-	} else {
+	if ( ! file_exists( $template_file ) ) {
+		$has_errors = true;
 		$notices[] = array(
 			'type' => 'error',
 			'message' => '✗ Hero block template file NOT found: ' . $template_file,
@@ -368,12 +347,8 @@ function nisson_therapy_admin_notice() {
 			}
 		}
 		
-		if ( $hero_group_found ) {
-			$notices[] = array(
-				'type' => 'success',
-				'message' => '✓ Hero block field group is registered.',
-			);
-		} else {
+		if ( ! $hero_group_found ) {
+			$has_errors = true;
 			$notices[] = array(
 				'type' => 'error',
 				'message' => '✗ Hero block field group is NOT registered. Found ' . count( $field_groups ) . ' field groups total.',
@@ -432,53 +407,30 @@ function nisson_therapy_admin_notice() {
 			}
 		}
 
-		if ( $asset_found ) {
-			$notices[] = array(
-				'type' => 'success',
-				'message' => '✓ ACF Pro JavaScript assets found at: ' . $found_path,
-			);
-		} else {
+		if ( ! $asset_found ) {
+			$has_errors = true;
 			$notices[] = array(
 				'type' => 'error',
 				'message' => '✗ ACF Pro JavaScript assets NOT found. Checked paths: ' . implode( ', ', $asset_paths ),
 			);
-			
-			// List what files DO exist in the assets directory
-			$assets_dir = $acf_path . 'assets/';
-			if ( is_dir( $assets_dir ) ) {
-				$files = @scandir( $assets_dir );
-				if ( $files ) {
-					$notices[] = array(
-						'type' => 'info',
-						'message' => 'Files in assets directory: ' . implode( ', ', array_slice( $files, 0, 10 ) ),
-					);
-				}
-			}
-		}
-
-		// Check ACF version
-		if ( defined( 'ACF_VERSION' ) ) {
-			$notices[] = array(
-				'type' => 'info',
-				'message' => 'ACF Version: ' . ACF_VERSION,
-			);
 		}
 	} else {
+		$has_errors = true;
 		$notices[] = array(
 			'type' => 'error',
 			'message' => '✗ Cannot locate ACF Pro plugin directory.',
 		);
 	}
 
-	// Check 8: Browser console errors
-	$notices[] = array(
-		'type' => 'warning',
-		'message' => '⚠ CRITICAL: Browser console shows ACF JavaScript files returning 404 errors. This prevents blocks from appearing in the editor. Check that ACF Pro plugin files are uploaded to the server.',
-	);
+	// Only show notice if there are errors
+	if ( ! $has_errors || empty( $notices ) ) {
+		return;
+	}
 
 	// Display all notices
 	?>
-	<div class="notice notice-info" style="padding: 15px; margin: 20px 0;">
+	<div class="notice notice-warning" style="padding: 15px; margin: 20px 0; position: relative;">
+		<button type="button" class="notice-dismiss" onclick="this.parentElement.style.display='none'; fetch('<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: 'action=nisson_therapy_dismiss_notice&nonce=<?php echo wp_create_nonce( 'dismiss_notice' ); ?>'})" style="position: absolute; top: 10px; right: 10px; border: none; background: transparent; cursor: pointer; font-size: 16px;">×</button>
 		<h2 style="margin-top: 0;">🔍 Nisson Therapy Block Diagnostics</h2>
 		<ul style="list-style: none; padding-left: 0;">
 			<?php foreach ( $notices as $notice ) : 
@@ -513,21 +465,18 @@ function nisson_therapy_admin_notice() {
 			<strong>Category:</strong> <code>nisson-therapy</code><br>
 			<strong>Template:</strong> <code><?php echo esc_html( str_replace( ABSPATH, '', $template_file ) ); ?></code>
 		</p>
-		<p style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;">
-			<strong>🔍 CRITICAL ISSUE DETECTED:</strong><br>
-			<strong style="color: #dc3232;">ACF Pro JavaScript files are returning 404 errors in the browser console.</strong><br><br>
-			This means ACF Pro plugin assets are missing or not accessible on the server.<br><br>
-			<strong>Immediate Actions:</strong><br>
-			1. <strong>Deactivate and Reactivate ACF Pro:</strong> Go to Plugins → Deactivate ACF Pro → Activate ACF Pro<br>
-			2. <strong>Check Plugin Updates:</strong> Go to Dashboard → Updates and update ACF Pro if available<br>
-			3. <strong>Verify Plugin Files:</strong> Use FTP to check if ACF Pro plugin folder exists and has all files<br>
-			4. <strong>Re-upload ACF Pro:</strong> If files are missing, re-upload the entire plugin folder via FTP<br>
-			5. <strong>Clear All Caches:</strong> Browser cache, WordPress cache, server cache<br>
-			6. <strong>Check File Permissions:</strong> Ensure plugin files are readable (644 for files, 755 for folders)<br>
-			7. <strong>Reload Editor:</strong> Hard refresh the editor page (Ctrl+Shift+R or Cmd+Shift+R)
-		</p>
 	</div>
 	<?php
 }
 add_action( 'admin_notices', 'nisson_therapy_admin_notice' );
+
+/**
+ * Handle notice dismissal via AJAX
+ */
+function nisson_therapy_dismiss_notice() {
+	check_ajax_referer( 'dismiss_notice', 'nonce' );
+	update_user_meta( get_current_user_id(), 'nisson_therapy_notice_dismissed', true );
+	wp_send_json_success();
+}
+add_action( 'wp_ajax_nisson_therapy_dismiss_notice', 'nisson_therapy_dismiss_notice' );
 

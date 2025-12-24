@@ -16,6 +16,7 @@ $headline    = get_field( 'headline' );
 $highlighted_text = get_field( 'highlighted_text' );
 $button_text = get_field( 'button_text' );
 $button_link = get_field( 'button_link' );
+$philosophy_line = get_field( 'philosophy_line' );
 $background_image = get_field( 'background_image' );
 $enable_parallax = get_field( 'enable_parallax' );
 
@@ -26,6 +27,7 @@ if ( $is_preview && empty( $headline ) ) {
 	$highlighted_text = $highlighted_text ?: 'Light?';
 	$button_text = $button_text ?: 'Learn more';
 	$button_link = $button_link ?: '#';
+	$philosophy_line = $philosophy_line ?: 'Explore your inner world safely, with curiosity and compassion for all parts of you.';
 }
 
 // Block classes
@@ -92,6 +94,10 @@ $block_classes = implode( ' ', $block_classes );
 						</svg>
 					</a>
 				</div>
+			<?php endif; ?>
+
+			<?php if ( $philosophy_line ) : ?>
+				<p class="hero-philosophy-line"><?php echo esc_html( $philosophy_line ); ?></p>
 			<?php endif; ?>
 		</div>
 	</div>

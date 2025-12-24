@@ -101,6 +101,18 @@
 
 .hero-cta {
 	margin-top: 2rem;
+	margin-bottom: 1.5rem;
+}
+
+.hero-philosophy-line {
+	font-size: 1.125rem;
+	font-weight: 400;
+	color: #4a5568;
+	line-height: 1.6;
+	margin-top: 1.5rem;
+	max-width: 600px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .btn-hero {
