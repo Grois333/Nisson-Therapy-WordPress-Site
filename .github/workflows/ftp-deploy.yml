@@ -31,15 +31,16 @@ jobs:
           echo "=== Counting files in plugins ==="
           find wp-content/plugins -type f | wc -l || echo "0"
       
-      - name: Deploy to FTP
+      - name: Deploy Themes and Plugins to FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: 194.36.184.144
           username: u682875833
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /domains/ntillimpsychotherapy.com/public_html/
+          local-dir: ./wp-content
+          server-dir: /domains/ntillimpsychotherapy.com/public_html/wp-content/
           log-level: verbose
-          dangerous-clean-slate: true
+          dangerous-clean-slate: false
           exclude: |
             **/.git*
             **/.git*/**
@@ -49,30 +50,20 @@ jobs:
             **/node_modules/**
             **/.env
             **/.env.*
-            **/README.md
-            **/LICENSE
             **/.DS_Store
             **/Thumbs.db
-            **/wp-admin/**
-            **/wp-includes/**
-            **/wp-*.php
-            **/xmlrpc.php
-            **/license.txt
-            **/readme.html
-            **/local-xdebuginfo.php
-            **/wp-config.php
-            **/wp-config-sample.php
-            **/wp-content/themes/twenty*/
-            **/wp-content/themes/twentytwenty*/
-            **/wp-content/themes/twentytwentyone/**
-            **/wp-content/themes/twentytwentytwo/**
-            **/wp-content/themes/twentytwentythree/**
-            **/wp-content/themes/twentytwentyfour/**
-            **/wp-content/themes/twentytwentyfive/**
-            **/wp-content/uploads/**
-            **/wp-content/cache/**
-            **/wp-content/debug.log
-            **/wp-content/error_log
+            **/themes/twenty*/
+            **/themes/twentytwenty*/
+            **/themes/twentytwentyone/**
+            **/themes/twentytwentytwo/**
+            **/themes/twentytwentythree/**
+            **/themes/twentytwentyfour/**
+            **/themes/twentytwentyfive/**
+            **/uploads/**
+            **/cache/**
+            **/debug.log
+            **/error_log
+            **/debug-display.php
             **/.vscode/**
             **/.idea/**
 
