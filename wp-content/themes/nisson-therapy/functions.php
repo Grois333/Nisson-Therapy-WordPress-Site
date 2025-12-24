@@ -226,26 +226,153 @@ add_filter( 'acf/settings/load_json', '__return_false' );
  * Admin notice to verify ACF Pro and block registration
  */
 function nisson_therapy_admin_notice() {
-	if ( ! function_exists( 'acf_register_block_type' ) ) {
-		?>
-		<div class="notice notice-error">
-			<p><strong>Nisson Therapy Theme:</strong> ACF Pro plugin is required for custom blocks to work. Please install and activate Advanced Custom Fields Pro.</p>
-		</div>
-		<?php
+	// Only show on admin pages
+	if ( ! is_admin() ) {
 		return;
 	}
 
-	// Check if block is registered
+	$notices = array();
+
+	// Check 1: Is ACF Pro installed?
+	if ( ! class_exists( 'ACF' ) ) {
+		$notices[] = array(
+			'type' => 'error',
+			'message' => 'ACF (Advanced Custom Fields) plugin is NOT installed or activated. Custom blocks require ACF Pro.',
+		);
+	} else {
+		$notices[] = array(
+			'type' => 'success',
+			'message' => '✓ ACF plugin is installed and active.',
+		);
+	}
+
+	// Check 2: Is ACF Pro (not just free version)?
+	if ( ! function_exists( 'acf_register_block_type' ) ) {
+		$notices[] = array(
+			'type' => 'error',
+			'message' => 'ACF PRO is required for blocks. The free version does not support blocks. Please install ACF Pro.',
+		);
+	} else {
+		$notices[] = array(
+			'type' => 'success',
+			'message' => '✓ ACF Pro block functions are available.',
+		);
+	}
+
+	// Check 3: Is the theme active?
+	$current_theme = wp_get_theme();
+	if ( $current_theme->get( 'Name' ) !== 'Nisson Therapy' ) {
+		$notices[] = array(
+			'type' => 'warning',
+			'message' => 'Current theme is: ' . $current_theme->get( 'Name' ) . '. Nisson Therapy theme must be activated for blocks to work.',
+		);
+	} else {
+		$notices[] = array(
+			'type' => 'success',
+			'message' => '✓ Nisson Therapy theme is active.',
+		);
+	}
+
+	// Check 4: Is block registered?
 	if ( function_exists( 'acf_has_block_type' ) ) {
-		$block_registered = acf_has_block_type( 'acf/nt-hero-section' );
-		if ( ! $block_registered ) {
-			?>
-			<div class="notice notice-warning">
-				<p><strong>Nisson Therapy Theme:</strong> Hero block is not registered. Check error logs for details.</p>
-			</div>
-			<?php
+		$block_name = 'acf/nt-hero-section';
+		$block_registered = acf_has_block_type( $block_name );
+		
+		if ( $block_registered ) {
+			$notices[] = array(
+				'type' => 'success',
+				'message' => '✓ Hero block is registered: ' . $block_name,
+			);
+		} else {
+			$notices[] = array(
+				'type' => 'error',
+				'message' => '✗ Hero block is NOT registered. Block name: ' . $block_name,
+			);
+		}
+	} else {
+		$notices[] = array(
+			'type' => 'warning',
+			'message' => 'Cannot check block registration - acf_has_block_type() function not available.',
+		);
+	}
+
+	// Check 5: Does template file exist?
+	$template_file = get_template_directory() . '/blocks/hero/hero.php';
+	if ( file_exists( $template_file ) ) {
+		$notices[] = array(
+			'type' => 'success',
+			'message' => '✓ Hero block template file exists.',
+		);
+	} else {
+		$notices[] = array(
+			'type' => 'error',
+			'message' => '✗ Hero block template file NOT found: ' . $template_file,
+		);
+	}
+
+	// Check 6: Are field groups registered?
+	if ( function_exists( 'acf_get_local_field_groups' ) ) {
+		$field_groups = acf_get_local_field_groups();
+		$hero_group_found = false;
+		foreach ( $field_groups as $group ) {
+			if ( isset( $group['key'] ) && $group['key'] === 'group_nt_hero_section_v2' ) {
+				$hero_group_found = true;
+				break;
+			}
+		}
+		
+		if ( $hero_group_found ) {
+			$notices[] = array(
+				'type' => 'success',
+				'message' => '✓ Hero block field group is registered.',
+			);
+		} else {
+			$notices[] = array(
+				'type' => 'error',
+				'message' => '✗ Hero block field group is NOT registered. Found ' . count( $field_groups ) . ' field groups total.',
+			);
 		}
 	}
+
+	// Display all notices
+	?>
+	<div class="notice notice-info" style="padding: 15px; margin: 20px 0;">
+		<h2 style="margin-top: 0;">🔍 Nisson Therapy Block Diagnostics</h2>
+		<ul style="list-style: none; padding-left: 0;">
+			<?php foreach ( $notices as $notice ) : 
+				$icon = '';
+				$color = '';
+				switch ( $notice['type'] ) {
+					case 'success':
+						$icon = '✓';
+						$color = '#46b450';
+						break;
+					case 'error':
+						$icon = '✗';
+						$color = '#dc3232';
+						break;
+					case 'warning':
+						$icon = '⚠';
+						$color = '#ffb900';
+						break;
+					default:
+						$icon = 'ℹ';
+						$color = '#2271b1';
+				}
+				?>
+				<li style="padding: 8px 0; border-bottom: 1px solid #eee;">
+					<strong style="color: <?php echo esc_attr( $color ); ?>;"><?php echo esc_html( $icon ); ?></strong>
+					<?php echo esc_html( $notice['message'] ); ?>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+		<p style="margin-bottom: 0;">
+			<strong>Block Name:</strong> <code>acf/nt-hero-section</code><br>
+			<strong>Category:</strong> <code>nisson-therapy</code><br>
+			<strong>Template:</strong> <code><?php echo esc_html( str_replace( ABSPATH, '', $template_file ) ); ?></code>
+		</p>
+	</div>
+	<?php
 }
 add_action( 'admin_notices', 'nisson_therapy_admin_notice' );
 
