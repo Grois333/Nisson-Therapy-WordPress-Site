@@ -368,6 +368,35 @@ function nisson_therapy_admin_notice() {
 		}
 	}
 
+	// Check 7: ACF Plugin path and assets
+	if ( defined( 'ACF_PATH' ) ) {
+		$acf_path = ACF_PATH;
+		$acf_assets_exist = file_exists( $acf_path . 'assets/build/js/pro/acf-pro-blocks.min.js' );
+		
+		if ( $acf_assets_exist ) {
+			$notices[] = array(
+				'type' => 'success',
+				'message' => '✓ ACF Pro assets found at: ' . str_replace( ABSPATH, '', $acf_path ),
+			);
+		} else {
+			$notices[] = array(
+				'type' => 'error',
+				'message' => '✗ ACF Pro JavaScript assets NOT found. Path checked: ' . $acf_path . 'assets/build/js/pro/acf-pro-blocks.min.js',
+			);
+		}
+	} else {
+		$notices[] = array(
+			'type' => 'warning',
+			'message' => 'ACF_PATH constant not defined. Cannot verify ACF assets location.',
+		);
+	}
+
+	// Check 8: Browser console errors
+	$notices[] = array(
+		'type' => 'warning',
+		'message' => '⚠ CRITICAL: Browser console shows ACF JavaScript files returning 404 errors. This prevents blocks from appearing in the editor. Check that ACF Pro plugin files are uploaded to the server.',
+	);
+
 	// Display all notices
 	?>
 	<div class="notice notice-info" style="padding: 15px; margin: 20px 0;">
@@ -406,13 +435,17 @@ function nisson_therapy_admin_notice() {
 			<strong>Template:</strong> <code><?php echo esc_html( str_replace( ABSPATH, '', $template_file ) ); ?></code>
 		</p>
 		<p style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;">
-			<strong>🔍 Troubleshooting:</strong><br>
-			1. Open a page/post in the editor<br>
-			2. Press <code>F12</code> to open browser console<br>
-			3. Look for messages starting with "Nisson Therapy:"<br>
-			4. Try searching for "Hero" or "nt-hero-section" in the block inserter<br>
-			5. Clear browser cache and reload the editor<br>
-			6. Check if the block appears when you type "/hero" in the editor
+			<strong>🔍 CRITICAL ISSUE DETECTED:</strong><br>
+			<strong style="color: #dc3232;">ACF Pro JavaScript files are returning 404 errors in the browser console.</strong><br><br>
+			This means ACF Pro plugin assets are missing or not accessible on the server.<br><br>
+			<strong>Solution:</strong><br>
+			1. Verify ACF Pro plugin is fully uploaded to: <code>wp-content/plugins/advanced-custom-fields-pro/</code><br>
+			2. Check that these files exist on the server:<br>
+			&nbsp;&nbsp;&nbsp;• <code>wp-content/plugins/advanced-custom-fields-pro/assets/build/js/pro/acf-pro-blocks.min.js</code><br>
+			&nbsp;&nbsp;&nbsp;• <code>wp-content/plugins/advanced-custom-fields-pro/assets/build/js/pro/acf-pro-input.min.js</code><br>
+			3. If files are missing, re-upload the ACF Pro plugin via FTP or WordPress admin<br>
+			4. Clear all caches (browser, WordPress, server)<br>
+			5. Reload the editor page
 		</p>
 	</div>
 	<?php
