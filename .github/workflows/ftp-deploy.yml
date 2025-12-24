@@ -17,6 +17,14 @@ jobs:
         with:
           fetch-depth: 0
       
+      - name: List theme files (debug)
+        run: |
+          echo "Checking for theme files..."
+          ls -la wp-content/themes/ || echo "themes directory not found"
+          find wp-content/themes -name "nisson-therapy" -type d || echo "nisson-therapy theme not found"
+          echo "Files in repository:"
+          find . -type f -not -path "./.git/*" -not -path "./.github/*" | head -20
+      
       - name: Deploy to FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
