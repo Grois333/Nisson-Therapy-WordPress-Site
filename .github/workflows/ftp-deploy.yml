@@ -1,0 +1,57 @@
+name: FTP Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  deploy:
+    name: Deploy to FTP Server
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Deploy to FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: 194.36.184.144
+          username: u682875833
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /domains/ntillimpsychotherapy.com/public_html/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            **/.github/**
+            **/.cursorrules
+            **/.gitignore
+            **/node_modules/**
+            **/.env
+            **/.env.*
+            **/README.md
+            **/LICENSE
+            **/.DS_Store
+            **/Thumbs.db
+            **/wp-admin/**
+            **/wp-includes/**
+            **/wp-*.php
+            **/xmlrpc.php
+            **/license.txt
+            **/readme.html
+            **/local-xdebuginfo.php
+            **/wp-config.php
+            **/wp-config-sample.php
+            **/wp-content/themes/twenty*/**
+            **/wp-content/uploads/**
+            **/wp-content/cache/**
+            **/wp-content/debug.log
+            **/wp-content/error_log
+            **/.vscode/**
+            **/.idea/**
+

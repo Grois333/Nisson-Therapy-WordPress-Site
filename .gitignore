@@ -1,0 +1,91 @@
+# WordPress Core Files
+/wp-admin/
+/wp-includes/
+/wp-*.php
+/xmlrpc.php
+/license.txt
+/readme.html
+/local-xdebuginfo.php
+
+# WordPress Configuration
+wp-config.php
+wp-config-sample.php
+
+# Default WordPress Themes (keep custom themes)
+/wp-content/themes/twenty*/
+/wp-content/themes/index.php
+
+# Default WordPress Plugins (keep custom plugins)
+/wp-content/plugins/akismet/
+/wp-content/plugins/hello.php
+/wp-content/plugins/index.php
+
+# Explicitly track custom themes and plugins (negation patterns)
+!wp-content/themes/
+!wp-content/plugins/
+!wp-content/themes/*/
+!wp-content/plugins/*/
+
+# WordPress Uploads (user-generated content)
+/wp-content/uploads/
+
+# WordPress Cache
+/wp-content/cache/
+/wp-content/advanced-cache.php
+/wp-content/wp-cache-config.php
+
+# WordPress Debug
+/wp-content/debug.log
+/wp-content/error_log
+
+# Node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build files
+/dist/
+/build/
+*.min.js
+*.min.css
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Composer
+/vendor/
+composer.lock
+
+# Package manager files
+package-lock.json
+yarn.lock
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# But ignore index.php in themes/plugins (WordPress default)
+/wp-content/themes/index.php
+/wp-content/plugins/index.php
+

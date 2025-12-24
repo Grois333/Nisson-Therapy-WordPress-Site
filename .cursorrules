@@ -1,0 +1,57 @@
+# WordPress Custom Theme Development Rules
+
+## Project Overview
+- Building a custom WordPress theme from scratch
+- Using ACF Blocks (not traditional ACF fields)
+- Each page section will be a separate ACF block
+- Theme will be based on a demo site (screenshots, HTML, CSS provided)
+- Only client content will be replaced
+
+## Development Guidelines
+
+### Theme Structure
+- Custom theme location: `wp-content/themes/nisson-therapy/` (or custom name)
+- Each section = one ACF block
+- Blocks should be modular and reusable
+- Follow WordPress coding standards (WPCS)
+
+### ACF Blocks
+- Use ACF Block API (acf_register_block_type)
+- Each block should be self-contained with its own:
+  - PHP template file
+  - CSS/SCSS file
+  - JavaScript file (if needed)
+- Blocks should be registered in `functions.php`
+- Use block.json for block metadata when possible
+
+### Code Standards
+- Follow WordPress PHP Coding Standards
+- Use proper escaping and sanitization
+- Prefix all functions, classes, and variables with theme prefix
+- Use meaningful, descriptive names
+- Comment complex logic
+
+### File Organization
+- Blocks in: `blocks/` directory
+- Each block in its own subdirectory
+- Assets (CSS/JS) in: `assets/` directory
+- Template parts in: `template-parts/` directory
+- Functions and includes in: `inc/` directory
+
+### Security
+- Always sanitize user input
+- Escape output
+- Use nonces for forms
+- Follow WordPress security best practices
+
+### Performance
+- Enqueue scripts and styles properly
+- Use WordPress dependency management
+- Optimize images
+- Minimize HTTP requests
+
+### Git Workflow
+- Custom theme and plugins are tracked in git
+- WordPress core and default themes/plugins are ignored
+- Use meaningful commit messages
+
