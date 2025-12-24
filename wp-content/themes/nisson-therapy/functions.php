@@ -278,6 +278,19 @@ function nisson_therapy_admin_notice() {
 			'type' => 'success',
 			'message' => '✓ ACF plugin is installed and active.',
 		);
+		
+		// Check if it's actually the Pro version
+		if ( defined( 'ACF_PRO' ) && ACF_PRO ) {
+			$notices[] = array(
+				'type' => 'success',
+				'message' => '✓ ACF Pro version confirmed (ACF_PRO constant is true).',
+			);
+		} else {
+			$notices[] = array(
+				'type' => 'warning',
+				'message' => '⚠ ACF_PRO constant not set. This might be the free version, which does not support blocks.',
+			);
+		}
 	}
 
 	// Check 2: Is ACF Pro (not just free version)?
@@ -369,25 +382,91 @@ function nisson_therapy_admin_notice() {
 	}
 
 	// Check 7: ACF Plugin path and assets
+	$acf_path_found = false;
+	$acf_actual_path = '';
+	
 	if ( defined( 'ACF_PATH' ) ) {
 		$acf_path = ACF_PATH;
-		$acf_assets_exist = file_exists( $acf_path . 'assets/build/js/pro/acf-pro-blocks.min.js' );
+		$notices[] = array(
+			'type' => 'info',
+			'message' => 'ACF_PATH constant: ' . $acf_path,
+		);
+	} else {
+		// Try to find ACF Pro manually
+		$possible_paths = array(
+			WP_PLUGIN_DIR . '/advanced-custom-fields-pro/',
+			WP_PLUGIN_DIR . '/acf-pro/',
+			WP_PLUGIN_DIR . '/advanced-custom-fields/',
+		);
 		
-		if ( $acf_assets_exist ) {
+		foreach ( $possible_paths as $path ) {
+			if ( file_exists( $path . 'acf.php' ) ) {
+				$acf_path = $path;
+				$notices[] = array(
+					'type' => 'info',
+					'message' => 'Found ACF at: ' . str_replace( ABSPATH, '', $path ),
+				);
+				break;
+			}
+		}
+	}
+
+	if ( isset( $acf_path ) ) {
+		// Check multiple possible asset locations
+		$asset_paths = array(
+			'assets/build/js/pro/acf-pro-blocks.min.js',
+			'assets/js/pro/acf-pro-blocks.min.js',
+			'pro/assets/js/acf-pro-blocks.min.js',
+			'assets/js/acf-pro-blocks.min.js',
+		);
+
+		$asset_found = false;
+		$found_path = '';
+
+		foreach ( $asset_paths as $asset_path ) {
+			$full_path = $acf_path . $asset_path;
+			if ( file_exists( $full_path ) ) {
+				$asset_found = true;
+				$found_path = $asset_path;
+				break;
+			}
+		}
+
+		if ( $asset_found ) {
 			$notices[] = array(
 				'type' => 'success',
-				'message' => '✓ ACF Pro assets found at: ' . str_replace( ABSPATH, '', $acf_path ),
+				'message' => '✓ ACF Pro JavaScript assets found at: ' . $found_path,
 			);
 		} else {
 			$notices[] = array(
 				'type' => 'error',
-				'message' => '✗ ACF Pro JavaScript assets NOT found. Path checked: ' . $acf_path . 'assets/build/js/pro/acf-pro-blocks.min.js',
+				'message' => '✗ ACF Pro JavaScript assets NOT found. Checked paths: ' . implode( ', ', $asset_paths ),
+			);
+			
+			// List what files DO exist in the assets directory
+			$assets_dir = $acf_path . 'assets/';
+			if ( is_dir( $assets_dir ) ) {
+				$files = @scandir( $assets_dir );
+				if ( $files ) {
+					$notices[] = array(
+						'type' => 'info',
+						'message' => 'Files in assets directory: ' . implode( ', ', array_slice( $files, 0, 10 ) ),
+					);
+				}
+			}
+		}
+
+		// Check ACF version
+		if ( defined( 'ACF_VERSION' ) ) {
+			$notices[] = array(
+				'type' => 'info',
+				'message' => 'ACF Version: ' . ACF_VERSION,
 			);
 		}
 	} else {
 		$notices[] = array(
-			'type' => 'warning',
-			'message' => 'ACF_PATH constant not defined. Cannot verify ACF assets location.',
+			'type' => 'error',
+			'message' => '✗ Cannot locate ACF Pro plugin directory.',
 		);
 	}
 
@@ -438,14 +517,14 @@ function nisson_therapy_admin_notice() {
 			<strong>🔍 CRITICAL ISSUE DETECTED:</strong><br>
 			<strong style="color: #dc3232;">ACF Pro JavaScript files are returning 404 errors in the browser console.</strong><br><br>
 			This means ACF Pro plugin assets are missing or not accessible on the server.<br><br>
-			<strong>Solution:</strong><br>
-			1. Verify ACF Pro plugin is fully uploaded to: <code>wp-content/plugins/advanced-custom-fields-pro/</code><br>
-			2. Check that these files exist on the server:<br>
-			&nbsp;&nbsp;&nbsp;• <code>wp-content/plugins/advanced-custom-fields-pro/assets/build/js/pro/acf-pro-blocks.min.js</code><br>
-			&nbsp;&nbsp;&nbsp;• <code>wp-content/plugins/advanced-custom-fields-pro/assets/build/js/pro/acf-pro-input.min.js</code><br>
-			3. If files are missing, re-upload the ACF Pro plugin via FTP or WordPress admin<br>
-			4. Clear all caches (browser, WordPress, server)<br>
-			5. Reload the editor page
+			<strong>Immediate Actions:</strong><br>
+			1. <strong>Deactivate and Reactivate ACF Pro:</strong> Go to Plugins → Deactivate ACF Pro → Activate ACF Pro<br>
+			2. <strong>Check Plugin Updates:</strong> Go to Dashboard → Updates and update ACF Pro if available<br>
+			3. <strong>Verify Plugin Files:</strong> Use FTP to check if ACF Pro plugin folder exists and has all files<br>
+			4. <strong>Re-upload ACF Pro:</strong> If files are missing, re-upload the entire plugin folder via FTP<br>
+			5. <strong>Clear All Caches:</strong> Browser cache, WordPress cache, server cache<br>
+			6. <strong>Check File Permissions:</strong> Ensure plugin files are readable (644 for files, 755 for folders)<br>
+			7. <strong>Reload Editor:</strong> Hard refresh the editor page (Ctrl+Shift+R or Cmd+Shift+R)
 		</p>
 	</div>
 	<?php
