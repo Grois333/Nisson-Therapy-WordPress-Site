@@ -125,17 +125,22 @@ add_filter( 'block_categories_all', 'nisson_therapy_block_category', 10, 2 );
 
 /**
  * Register ACF Blocks
+ * Must run after ACF is fully loaded
  */
 function nisson_therapy_register_acf_blocks() {
-	// Check if ACF is active
+	// Check if ACF Pro is active
 	if ( ! function_exists( 'acf_register_block_type' ) ) {
+		// Log error for debugging
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( 'Nisson Therapy: ACF Pro is not active. Blocks cannot be registered.' );
+		}
 		return;
 	}
 
-	// Hero Block
-	acf_register_block_type(
+	// Hero Block - using completely new unique name
+	$block_result = acf_register_block_type(
 		array(
-			'name'            => 'nisson-hero',
+			'name'            => 'nt-hero-section',
 			'title'           => __( '🎯 Hero Section', 'nisson-therapy' ),
 			'description'     => __( 'Hero section with parallax background image. Perfect for landing pages.', 'nisson-therapy' ),
 			'render_template' => get_template_directory() . '/blocks/hero/hero.php',
@@ -145,13 +150,13 @@ function nisson_therapy_register_acf_blocks() {
 				'foreground' => '#ffffff',
 				'src'        => 'cover-image',
 			),
-			'keywords'        => array( 'hero', 'banner', 'parallax', 'landing', 'nisson' ),
+			'keywords'        => array( 'hero', 'banner', 'parallax', 'landing', 'nisson', 'therapy' ),
 			'supports'        => array(
 				'align' => false,
 				'anchor' => true,
 			),
 			'enqueue_style'   => get_template_directory_uri() . '/blocks/hero/hero.css',
-			'mode'            => 'preview', // Show preview that matches frontend
+			'mode'            => 'preview',
 			'example'         => array(
 				'attributes' => array(
 					'mode' => 'preview',
@@ -167,8 +172,17 @@ function nisson_therapy_register_acf_blocks() {
 			),
 		)
 	);
+
+	// Debug log
+	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		if ( $block_result ) {
+			error_log( 'Nisson Therapy: Hero block registered successfully as acf/nt-hero-section' );
+		} else {
+			error_log( 'Nisson Therapy: Failed to register Hero block' );
+		}
+	}
 }
-add_action( 'acf/init', 'nisson_therapy_register_acf_blocks' );
+add_action( 'acf/init', 'nisson_therapy_register_acf_blocks', 20 );
 
 /**
  * Add ACF Options Page for Header Settings
