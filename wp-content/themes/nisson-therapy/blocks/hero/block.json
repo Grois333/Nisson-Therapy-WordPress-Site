@@ -1,7 +1,7 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 2,
-	"name": "acf/hero",
+	"name": "acf/nisson-hero",
 	"title": "🎯 Hero Section",
 	"description": "Hero section with parallax background image. Perfect for landing pages.",
 	"category": "nisson-therapy",

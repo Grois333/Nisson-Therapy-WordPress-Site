@@ -135,7 +135,7 @@ function nisson_therapy_register_acf_blocks() {
 	// Hero Block
 	acf_register_block_type(
 		array(
-			'name'            => 'hero',
+			'name'            => 'nisson-hero',
 			'title'           => __( '🎯 Hero Section', 'nisson-therapy' ),
 			'description'     => __( 'Hero section with parallax background image. Perfect for landing pages.', 'nisson-therapy' ),
 			'render_template' => get_template_directory() . '/blocks/hero/hero.php',
@@ -201,19 +201,11 @@ add_action( 'acf/init', 'nisson_therapy_acf_options_page' );
 require_once get_template_directory() . '/inc/acf-fields.php';
 
 /**
- * Set ACF JSON save/load directory (optional - for syncing if needed)
- * Note: Fields are now registered in PHP, but JSON can still be used for syncing
+ * Disable ACF JSON sync - we're using PHP registration only
  */
-function nisson_therapy_acf_json_save_point( $path ) {
-	$path = get_stylesheet_directory() . '/acf-json';
-	return $path;
+function nisson_therapy_disable_acf_json() {
+	return false;
 }
-add_filter( 'acf/settings/save_json', 'nisson_therapy_acf_json_save_point' );
-
-function nisson_therapy_acf_json_load_point( $paths ) {
-	unset( $paths[0] );
-	$paths[] = get_stylesheet_directory() . '/acf-json';
-	return $paths;
-}
-add_filter( 'acf/settings/load_json', 'nisson_therapy_acf_json_load_point' );
+add_filter( 'acf/settings/save_json', 'nisson_therapy_disable_acf_json' );
+add_filter( 'acf/settings/load_json', '__return_false' );
 

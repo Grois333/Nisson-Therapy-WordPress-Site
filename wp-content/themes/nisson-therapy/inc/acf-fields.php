@@ -22,11 +22,11 @@ function nisson_therapy_register_hero_fields() {
 
 	acf_add_local_field_group(
 		array(
-			'key'    => 'group_hero',
-			'title'  => 'Hero Block Fields',
+			'key'    => 'group_nisson_hero_block',
+			'title'  => 'Nisson Hero Block Fields',
 			'fields' => array(
 				array(
-					'key'           => 'field_hero_subheadline',
+					'key'           => 'field_nisson_hero_subheadline',
 					'label'         => 'Subheadline',
 					'name'          => 'subheadline',
 					'type'          => 'text',
@@ -36,7 +36,7 @@ function nisson_therapy_register_hero_fields() {
 					'placeholder'   => 'Telehealth for New York, New Jersey, Florida, and Oregon',
 				),
 				array(
-					'key'           => 'field_hero_headline',
+					'key'           => 'field_nisson_hero_headline',
 					'label'         => 'Headline',
 					'name'          => 'headline',
 					'type'          => 'text',
@@ -46,7 +46,7 @@ function nisson_therapy_register_hero_fields() {
 					'placeholder'   => 'Time to See Yourself In A Different',
 				),
 				array(
-					'key'           => 'field_hero_highlighted_text',
+					'key'           => 'field_nisson_hero_highlighted_text',
 					'label'         => 'Highlighted Text',
 					'name'          => 'highlighted_text',
 					'type'          => 'text',
@@ -56,7 +56,7 @@ function nisson_therapy_register_hero_fields() {
 					'placeholder'   => 'Light?',
 				),
 				array(
-					'key'           => 'field_hero_button_text',
+					'key'           => 'field_nisson_hero_button_text',
 					'label'         => 'Button Text',
 					'name'          => 'button_text',
 					'type'          => 'text',
@@ -65,7 +65,7 @@ function nisson_therapy_register_hero_fields() {
 					'default_value' => 'Learn more',
 				),
 				array(
-					'key'           => 'field_hero_button_link',
+					'key'           => 'field_nisson_hero_button_link',
 					'label'         => 'Button Link',
 					'name'          => 'button_link',
 					'type'          => 'url',
@@ -74,7 +74,7 @@ function nisson_therapy_register_hero_fields() {
 					'default_value' => '',
 				),
 				array(
-					'key'           => 'field_hero_background_image',
+					'key'           => 'field_nisson_hero_background_image',
 					'label'         => 'Background Image',
 					'name'          => 'background_image',
 					'type'          => 'image',
@@ -85,7 +85,7 @@ function nisson_therapy_register_hero_fields() {
 					'library'       => 'all',
 				),
 				array(
-					'key'           => 'field_hero_enable_parallax',
+					'key'           => 'field_nisson_hero_enable_parallax',
 					'label'         => 'Enable Parallax',
 					'name'          => 'enable_parallax',
 					'type'          => 'true_false',
@@ -100,7 +100,7 @@ function nisson_therapy_register_hero_fields() {
 					array(
 						'param'    => 'block',
 						'operator' => '==',
-						'value'    => 'acf/hero',
+						'value'    => 'acf/nisson-hero',
 					),
 				),
 			),
@@ -126,11 +126,11 @@ function nisson_therapy_register_header_fields() {
 
 	acf_add_local_field_group(
 		array(
-			'key'    => 'group_header_settings',
-			'title'  => 'Header Settings',
+			'key'    => 'group_nisson_header_settings',
+			'title'  => 'Nisson Header Settings',
 			'fields' => array(
 				array(
-					'key'           => 'field_header_cta_text',
+					'key'           => 'field_nisson_header_cta_text',
 					'label'        => 'CTA Button Text',
 					'name'         => 'header_cta_text',
 					'type'         => 'text',
@@ -140,7 +140,7 @@ function nisson_therapy_register_header_fields() {
 					'placeholder'  => 'Get Started',
 				),
 				array(
-					'key'           => 'field_header_cta_link',
+					'key'           => 'field_nisson_header_cta_link',
 					'label'         => 'CTA Button Link',
 					'name'          => 'header_cta_link',
 					'type'          => 'url',
