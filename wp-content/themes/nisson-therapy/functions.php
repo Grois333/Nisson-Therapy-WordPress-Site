@@ -107,18 +107,18 @@ add_action( 'enqueue_block_editor_assets', 'nisson_therapy_editor_styles' );
 
 /**
  * Register custom block category for theme blocks
+ * Must run early to ensure category exists before blocks register
  */
 function nisson_therapy_block_category( $categories, $editor_context ) {
-	if ( ! empty( $editor_context->post ) ) {
-		array_unshift(
-			$categories,
-			array(
-				'slug'  => 'nisson-therapy',
-				'title' => __( 'Nisson Therapy Blocks', 'nisson-therapy' ),
-				'icon'  => null,
-			)
-		);
-	}
+	// Always add the category, not just when post exists
+	array_unshift(
+		$categories,
+		array(
+			'slug'  => 'nisson-therapy',
+			'title' => __( 'Nisson Therapy Blocks', 'nisson-therapy' ),
+			'icon'  => null,
+		)
+	);
 	return $categories;
 }
 add_filter( 'block_categories_all', 'nisson_therapy_block_category', 10, 2 );
@@ -130,10 +130,15 @@ add_filter( 'block_categories_all', 'nisson_therapy_block_category', 10, 2 );
 function nisson_therapy_register_acf_blocks() {
 	// Check if ACF Pro is active
 	if ( ! function_exists( 'acf_register_block_type' ) ) {
-		// Log error for debugging
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log( 'Nisson Therapy: ACF Pro is not active. Blocks cannot be registered.' );
-		}
+		// Always log this error
+		error_log( 'NISSON THERAPY ERROR: ACF Pro is not active. Blocks cannot be registered. Please install and activate ACF Pro plugin.' );
+		return;
+	}
+
+	// Verify template file exists
+	$template_file = get_template_directory() . '/blocks/hero/hero.php';
+	if ( ! file_exists( $template_file ) ) {
+		error_log( 'NISSON THERAPY ERROR: Hero block template file not found: ' . $template_file );
 		return;
 	}
 
@@ -143,13 +148,9 @@ function nisson_therapy_register_acf_blocks() {
 			'name'            => 'nt-hero-section',
 			'title'           => __( '🎯 Hero Section', 'nisson-therapy' ),
 			'description'     => __( 'Hero section with parallax background image. Perfect for landing pages.', 'nisson-therapy' ),
-			'render_template' => get_template_directory() . '/blocks/hero/hero.php',
+			'render_template' => $template_file,
 			'category'        => 'nisson-therapy',
-			'icon'            => array(
-				'background' => '#60a5fa',
-				'foreground' => '#ffffff',
-				'src'        => 'cover-image',
-			),
+			'icon'            => 'cover-image',
 			'keywords'        => array( 'hero', 'banner', 'parallax', 'landing', 'nisson', 'therapy' ),
 			'supports'        => array(
 				'align' => false,
@@ -173,13 +174,11 @@ function nisson_therapy_register_acf_blocks() {
 		)
 	);
 
-	// Debug log
-	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-		if ( $block_result ) {
-			error_log( 'Nisson Therapy: Hero block registered successfully as acf/nt-hero-section' );
-		} else {
-			error_log( 'Nisson Therapy: Failed to register Hero block' );
-		}
+	// Always log registration result
+	if ( $block_result ) {
+		error_log( 'NISSON THERAPY SUCCESS: Hero block registered as acf/nt-hero-section' );
+	} else {
+		error_log( 'NISSON THERAPY ERROR: Failed to register Hero block. Check ACF Pro is active.' );
 	}
 }
 add_action( 'acf/init', 'nisson_therapy_register_acf_blocks', 20 );
@@ -222,4 +221,31 @@ function nisson_therapy_disable_acf_json() {
 }
 add_filter( 'acf/settings/save_json', 'nisson_therapy_disable_acf_json' );
 add_filter( 'acf/settings/load_json', '__return_false' );
+
+/**
+ * Admin notice to verify ACF Pro and block registration
+ */
+function nisson_therapy_admin_notice() {
+	if ( ! function_exists( 'acf_register_block_type' ) ) {
+		?>
+		<div class="notice notice-error">
+			<p><strong>Nisson Therapy Theme:</strong> ACF Pro plugin is required for custom blocks to work. Please install and activate Advanced Custom Fields Pro.</p>
+		</div>
+		<?php
+		return;
+	}
+
+	// Check if block is registered
+	if ( function_exists( 'acf_has_block_type' ) ) {
+		$block_registered = acf_has_block_type( 'acf/nt-hero-section' );
+		if ( ! $block_registered ) {
+			?>
+			<div class="notice notice-warning">
+				<p><strong>Nisson Therapy Theme:</strong> Hero block is not registered. Check error logs for details.</p>
+			</div>
+			<?php
+		}
+	}
+}
+add_action( 'admin_notices', 'nisson_therapy_admin_notice' );
 
