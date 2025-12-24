@@ -1,0 +1,185 @@
+/**
+ * Main Theme Styles
+ */
+
+/* Reset and Base Styles */
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+	line-height: 1.6;
+	color: #333;
+	background: #fff;
+}
+
+/* Header Styles */
+.site-header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	background: #fff;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	z-index: 1000;
+	padding: 1rem 0;
+}
+
+.header-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 2rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.site-branding {
+	flex: 0 0 auto;
+}
+
+.site-logo-link {
+	text-decoration: none;
+	color: #1a365d;
+	font-weight: 700;
+	font-size: 1.25rem;
+}
+
+.custom-logo {
+	max-height: 60px;
+	width: auto;
+}
+
+.main-navigation {
+	flex: 1 1 auto;
+	display: flex;
+	justify-content: center;
+}
+
+.nav-menu {
+	display: flex;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	gap: 2rem;
+}
+
+.nav-menu a {
+	text-decoration: none;
+	color: #333;
+	font-weight: 500;
+	transition: color 0.3s ease;
+}
+
+.nav-menu a:hover {
+	color: #60a5fa;
+}
+
+.menu-toggle {
+	display: none;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0.5rem;
+}
+
+.header-cta {
+	flex: 0 0 auto;
+}
+
+.btn-primary {
+	display: inline-block;
+	padding: 0.625rem 1.25rem;
+	background: #fff;
+	border: 2px solid #60a5fa;
+	color: #1a365d;
+	text-decoration: none;
+	border-radius: 4px;
+	font-weight: 500;
+	transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+	background: #60a5fa;
+	color: #fff;
+}
+
+/* Main Content */
+.site-main {
+	margin-top: 80px; /* Account for fixed header */
+}
+
+/* Footer */
+.site-footer {
+	background: #1a365d;
+	color: #fff;
+	padding: 3rem 0 1rem;
+	margin-top: 4rem;
+}
+
+.footer-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 2rem;
+}
+
+.site-info {
+	text-align: center;
+	padding-top: 2rem;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+	font-size: 0.875rem;
+}
+
+/* Utility Classes */
+.screen-reader-text {
+	clip: rect(1px, 1px, 1px, 1px);
+	position: absolute !important;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+}
+
+.skip-link {
+	position: absolute;
+	top: -40px;
+	left: 0;
+	background: #000;
+	color: #fff;
+	padding: 8px 16px;
+	text-decoration: none;
+	z-index: 100000;
+}
+
+.skip-link:focus {
+	top: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.menu-toggle {
+		display: block;
+	}
+
+	.nav-menu {
+		display: none;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		background: #fff;
+		flex-direction: column;
+		padding: 1rem;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	}
+
+	.nav-menu.active {
+		display: flex;
+	}
+
+	.header-cta {
+		display: none;
+	}
+}
+

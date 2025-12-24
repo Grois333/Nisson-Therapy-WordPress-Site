@@ -1,0 +1,31 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "acf/hero",
+	"title": "🎯 Hero Section",
+	"description": "Hero section with parallax background image. Perfect for landing pages.",
+	"category": "nisson-therapy",
+	"icon": "cover-image",
+	"keywords": ["hero", "banner", "parallax", "landing", "nisson"],
+	"acf": {
+		"mode": "edit",
+		"renderTemplate": "hero.php"
+	},
+	"supports": {
+		"anchor": true,
+		"align": false
+	},
+	"example": {
+		"attributes": {
+			"mode": "preview",
+			"data": {
+				"subheadline": "Telehealth for New York, New Jersey, Florida, and Oregon",
+				"headline": "Time to See Yourself In A Different",
+				"highlighted_text": "Light?",
+				"button_text": "Learn more",
+				"button_link": "#"
+			}
+		}
+	}
+}
+

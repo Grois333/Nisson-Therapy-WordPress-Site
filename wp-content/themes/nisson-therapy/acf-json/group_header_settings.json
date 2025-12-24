@@ -1,0 +1,43 @@
+{
+	"key": "group_header_settings",
+	"title": "Header Settings",
+	"fields": [
+		{
+			"key": "field_header_cta_text",
+			"label": "CTA Button Text",
+			"name": "header_cta_text",
+			"type": "text",
+			"instructions": "Text for the header call-to-action button",
+			"required": 0,
+			"default_value": "Get Started",
+			"placeholder": "Get Started"
+		},
+		{
+			"key": "field_header_cta_link",
+			"label": "CTA Button Link",
+			"name": "header_cta_link",
+			"type": "url",
+			"instructions": "URL for the header call-to-action button",
+			"required": 0,
+			"default_value": "/contact"
+		}
+	],
+	"location": [
+		[
+			{
+				"param": "options_page",
+				"operator": "==",
+				"value": "theme-settings"
+			}
+		]
+	],
+	"menu_order": 0,
+	"position": "normal",
+	"style": "default",
+	"label_placement": "top",
+	"instruction_placement": "label",
+	"hide_on_screen": "",
+	"active": true,
+	"description": ""
+}
+

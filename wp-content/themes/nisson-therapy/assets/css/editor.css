@@ -1,0 +1,50 @@
+/**
+ * Block Editor Styles
+ * Styles for the Gutenberg editor to make blocks more identifiable
+ */
+
+/* Custom block category styling */
+.block-editor-block-list__layout .wp-block[data-type^="acf/"] {
+	border-left: 3px solid #60a5fa;
+}
+
+.block-editor-block-list__layout .wp-block[data-type="acf/hero"] {
+	border-left-color: #60a5fa;
+}
+
+/* Block inserter preview */
+.block-editor-block-types-list__item[data-category="nisson-therapy"] .block-editor-block-types-list__item-icon {
+	background: #60a5fa;
+	border-radius: 4px;
+}
+
+/* Ensure ACF block previews render correctly */
+.acf-block-preview {
+	position: relative;
+}
+
+/* Hero block preview in editor should match frontend */
+.block-editor-block-preview__container .hero-block,
+.editor-styles-wrapper .hero-block {
+	position: relative;
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+
+/* Make sure editor preview shows content properly */
+.editor-styles-wrapper .hero-content {
+	position: relative;
+	z-index: 3;
+	width: 100%;
+	padding: 2rem;
+	text-align: center;
+}
+
+/* Disable parallax in editor preview */
+.editor-styles-wrapper .hero-background[data-parallax="true"] {
+	transform: none !important;
+}
+
