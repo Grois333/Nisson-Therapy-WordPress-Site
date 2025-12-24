@@ -196,7 +196,13 @@ function nisson_therapy_acf_options_page() {
 add_action( 'acf/init', 'nisson_therapy_acf_options_page' );
 
 /**
- * Set ACF JSON save/load directory
+ * Load ACF field groups from PHP
+ */
+require_once get_template_directory() . '/inc/acf-fields.php';
+
+/**
+ * Set ACF JSON save/load directory (optional - for syncing if needed)
+ * Note: Fields are now registered in PHP, but JSON can still be used for syncing
  */
 function nisson_therapy_acf_json_save_point( $path ) {
 	$path = get_stylesheet_directory() . '/acf-json';
