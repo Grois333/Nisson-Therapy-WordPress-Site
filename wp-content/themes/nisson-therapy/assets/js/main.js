@@ -8,19 +8,57 @@
 	// Mobile menu toggle
 	const menuToggle = document.querySelector('.menu-toggle');
 	const navMenu = document.querySelector('.nav-menu');
+	const mainNavigation = document.querySelector('.main-navigation');
 
-	if (menuToggle && navMenu) {
-		menuToggle.addEventListener('click', function() {
-			navMenu.classList.toggle('active');
-			const isExpanded = navMenu.classList.contains('active');
-			menuToggle.setAttribute('aria-expanded', isExpanded);
+	function closeMenu() {
+		if (mainNavigation) {
+			mainNavigation.classList.remove('active');
+		}
+		if (navMenu) {
+			navMenu.classList.remove('active');
+		}
+		if (menuToggle) {
+			menuToggle.setAttribute('aria-expanded', 'false');
+		}
+		document.body.style.overflow = '';
+	}
+
+	function openMenu() {
+		if (mainNavigation) {
+			mainNavigation.classList.add('active');
+		}
+		if (navMenu) {
+			navMenu.classList.add('active');
+		}
+		if (menuToggle) {
+			menuToggle.setAttribute('aria-expanded', 'true');
+		}
+		document.body.style.overflow = 'hidden';
+	}
+
+	if (menuToggle && navMenu && mainNavigation) {
+		menuToggle.addEventListener('click', function(e) {
+			e.stopPropagation();
+			const isActive = mainNavigation.classList.contains('active');
+			
+			if (isActive) {
+				closeMenu();
+			} else {
+				openMenu();
+			}
 		});
 
-		// Close menu when clicking outside
-		document.addEventListener('click', function(event) {
-			if (!menuToggle.contains(event.target) && !navMenu.contains(event.target)) {
-				navMenu.classList.remove('active');
-				menuToggle.setAttribute('aria-expanded', 'false');
+		// Close menu when clicking on overlay
+		mainNavigation.addEventListener('click', function(e) {
+			if (e.target === mainNavigation) {
+				closeMenu();
+			}
+		});
+
+		// Close menu on escape key
+		document.addEventListener('keydown', function(e) {
+			if (e.key === 'Escape' && mainNavigation.classList.contains('active')) {
+				closeMenu();
 			}
 		});
 	}

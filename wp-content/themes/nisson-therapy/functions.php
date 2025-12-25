@@ -40,6 +40,45 @@ function nisson_therapy_setup() {
 add_action( 'after_setup_theme', 'nisson_therapy_setup' );
 
 /**
+ * Add CSS class to menu item link (not the li)
+ * This allows adding classes like "btn btn-primary" to menu items in Appearance > Menus
+ * The classes will be applied to the <a> tag, not the <li> tag
+ */
+function nisson_therapy_nav_menu_css_class( $classes, $item, $args ) {
+	// Remove btn classes from li - we'll add them to the link instead
+	$classes = array_filter( $classes, function( $class ) {
+		return strpos( $class, 'btn' ) === false;
+	} );
+	return $classes;
+}
+add_filter( 'nav_menu_css_class', 'nisson_therapy_nav_menu_css_class', 10, 3 );
+
+/**
+ * Add CSS class to menu item link
+ */
+function nisson_therapy_nav_menu_link_attributes( $atts, $item, $args ) {
+	// Check if menu item has specific classes
+	if ( ! empty( $item->classes ) ) {
+		$classes = array_filter( $item->classes );
+		if ( ! empty( $classes ) ) {
+			// Find btn classes and add them to the link
+			$btn_classes = array();
+			foreach ( $classes as $class ) {
+				if ( strpos( $class, 'btn' ) !== false ) {
+					$btn_classes[] = $class;
+				}
+			}
+			if ( ! empty( $btn_classes ) ) {
+				$existing_class = isset( $atts['class'] ) ? $atts['class'] : '';
+				$atts['class'] = trim( $existing_class . ' ' . implode( ' ', $btn_classes ) );
+			}
+		}
+	}
+	return $atts;
+}
+add_filter( 'nav_menu_link_attributes', 'nisson_therapy_nav_menu_link_attributes', 10, 3 );
+
+/**
  * Allow SVG uploads in media library
  */
 function nisson_therapy_allow_svg_upload( $mimes ) {
@@ -157,11 +196,19 @@ add_filter( 'get_custom_logo', 'nisson_therapy_custom_logo_output', 10, 2 );
 function nisson_therapy_scripts() {
 	$theme_version = wp_get_theme()->get( 'Version' );
 
+	// Enqueue Google Fonts (Poppins)
+	wp_enqueue_style(
+		'nisson-therapy-fonts',
+		'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap',
+		array(),
+		null
+	);
+
 	// Main stylesheet
 	wp_enqueue_style(
 		'nisson-therapy-style',
 		get_stylesheet_uri(),
-		array(),
+		array( 'nisson-therapy-fonts' ),
 		$theme_version
 	);
 
