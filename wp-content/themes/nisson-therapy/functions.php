@@ -352,8 +352,11 @@ function nisson_therapy_register_acf_blocks() {
 					'subheadline'      => 'Telehealth for New York, New Jersey, Florida, and Oregon',
 					'headline'         => 'Time to See Yourself In A Different',
 					'highlighted_text' => 'Light?',
-					'button_text'      => 'Learn more',
-					'button_link'      => '#',
+					'philosophy_line'  => 'Explore your inner world safely, with curiosity and compassion for all parts of you.',
+					'button_link'      => array(
+						'url'   => '#',
+						'title' => 'Learn more',
+					),
 					'enable_parallax'  => true,
 				),
 			),

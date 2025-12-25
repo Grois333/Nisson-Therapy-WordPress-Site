@@ -14,7 +14,6 @@
 $subheadline = get_field( 'subheadline' );
 $headline    = get_field( 'headline' );
 $highlighted_text = get_field( 'highlighted_text' );
-$button_text = get_field( 'button_text' );
 $button_link = get_field( 'button_link' );
 $philosophy_line = get_field( 'philosophy_line' );
 $background_image = get_field( 'background_image' );
@@ -25,8 +24,13 @@ if ( $is_preview && empty( $headline ) ) {
 	$subheadline = $subheadline ?: 'Telehealth for New York, New Jersey, Florida, and Oregon';
 	$headline = $headline ?: 'Time to See Yourself In A Different';
 	$highlighted_text = $highlighted_text ?: 'Light?';
-	$button_text = $button_text ?: 'Learn more';
-	$button_link = $button_link ?: '#';
+	if ( empty( $button_link ) ) {
+		$button_link = array(
+			'url'    => '#',
+			'title'  => 'Learn more',
+			'target' => '',
+		);
+	}
 	$philosophy_line = $philosophy_line ?: 'Explore your inner world safely, with curiosity and compassion for all parts of you.';
 }
 
@@ -72,7 +76,12 @@ $block_classes = implode( ' ', $block_classes );
 						if ( count( $headline_parts ) === 2 ) {
 							echo esc_html( $headline_parts[0] );
 							?>
-							<span class="hero-highlight"><?php echo esc_html( $highlighted_text ); ?></span>
+							<span class="hero-highlight">
+								<?php echo esc_html( $highlighted_text ); ?>
+								<svg class="hero-highlight-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 150" preserveAspectRatio="none" aria-hidden="true">
+									<path class="hero-highlight-path" d="M325,18C228.7-8.3,118.5,8.3,78,21C22.4,38.4,4.6,54.6,5.6,77.6c1.4,32.4,52.2,54,142.6,63.7 c66.2,7.1,212.2,7.5,273.5-8.3c64.4-16.6,104.3-57.6,33.8-98.2C386.7-4.9,179.4-1.4,126.3,20.7 Z" fill="none" stroke="#2c3e50" stroke-width="2"/>
+								</svg>
+							</span>
 							<?php
 							echo esc_html( $headline_parts[1] );
 						} else {
@@ -85,19 +94,21 @@ $block_classes = implode( ' ', $block_classes );
 				</h1>
 			<?php endif; ?>
 
-			<?php if ( $button_text && $button_link ) : ?>
+			<?php if ( $philosophy_line ) : ?>
+				<p class="hero-philosophy-line"><?php echo esc_html( $philosophy_line ); ?></p>
+			<?php endif; ?>
+
+			<?php if ( $button_link && is_array( $button_link ) && ! empty( $button_link['url'] ) ) : ?>
 				<div class="hero-cta">
-					<a href="<?php echo esc_url( $button_link ); ?>" class="btn btn-hero">
-						<span class="btn-text"><?php echo esc_html( $button_text ); ?></span>
+					<a href="<?php echo esc_url( $button_link['url'] ); ?>" 
+					   class="btn btn-hero" 
+					   <?php if ( ! empty( $button_link['target'] ) ) : ?>target="<?php echo esc_attr( $button_link['target'] ); ?>"<?php endif; ?>>
+						<span class="btn-text"><?php echo esc_html( $button_link['title'] ?: 'Learn more' ); ?></span>
 						<svg aria-hidden="true" class="btn-icon" viewBox="0 0 320 512" xmlns="http://www.w3.org/2000/svg">
 							<path d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z"></path>
 						</svg>
 					</a>
 				</div>
-			<?php endif; ?>
-
-			<?php if ( $philosophy_line ) : ?>
-				<p class="hero-philosophy-line"><?php echo esc_html( $philosophy_line ); ?></p>
 			<?php endif; ?>
 		</div>
 	</div>
