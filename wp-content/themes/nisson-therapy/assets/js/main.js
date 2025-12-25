@@ -63,7 +63,7 @@
 		});
 	}
 
-	// Smooth scroll for anchor links
+	// Smooth scroll for anchor links with header offset
 	document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 		anchor.addEventListener('click', function(e) {
 			const href = this.getAttribute('href');
@@ -71,9 +71,13 @@
 				const target = document.querySelector(href);
 				if (target) {
 					e.preventDefault();
-					target.scrollIntoView({
-						behavior: 'smooth',
-						block: 'start'
+					const header = document.querySelector('.site-header');
+					const headerHeight = header ? header.offsetHeight : 0;
+					const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+					
+					window.scrollTo({
+						top: targetPosition,
+						behavior: 'smooth'
 					});
 				}
 			}

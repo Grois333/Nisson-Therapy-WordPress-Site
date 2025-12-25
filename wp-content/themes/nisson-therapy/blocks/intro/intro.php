@@ -28,7 +28,7 @@ $block_classes = array( 'intro-block', 'acf-block-intro' );
 $block_classes = implode( ' ', $block_classes );
 ?>
 
-<section class="<?php echo esc_attr( $block_classes ); ?>" data-block-name="intro">
+<section class="<?php echo esc_attr( $block_classes ); ?>" id="intro-section" data-block-name="intro">
 	<div class="intro-container">
 		<?php if ( $intro_name ) : ?>
 			<p class="intro-name"><?php echo esc_html( $intro_name ); ?></p>
