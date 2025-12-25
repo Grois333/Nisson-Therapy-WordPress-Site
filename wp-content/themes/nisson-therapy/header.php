@@ -23,8 +23,25 @@
 	<div class="header-container">
 		<div class="site-branding">
 			<?php
-			if ( has_custom_logo() ) {
-				the_custom_logo();
+			$custom_logo_id = get_theme_mod( 'custom_logo' );
+			if ( $custom_logo_id ) {
+				// Get logo URL - this works for both SVG and regular images
+				$logo_url = wp_get_attachment_image_url( $custom_logo_id, 'full' );
+				$logo_alt = get_post_meta( $custom_logo_id, '_wp_attachment_image_alt', true );
+				if ( empty( $logo_alt ) ) {
+					$logo_alt = get_bloginfo( 'name', 'display' );
+				}
+				
+				if ( $logo_url ) {
+					?>
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="custom-logo-link" rel="home">
+						<img src="<?php echo esc_url( $logo_url ); ?>" alt="<?php echo esc_attr( $logo_alt ); ?>" class="custom-logo" />
+					</a>
+					<?php
+				} else {
+					// Fallback to WordPress default
+					the_custom_logo();
+				}
 			} else {
 				?>
 				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-logo-link">

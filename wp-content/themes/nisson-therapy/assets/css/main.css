@@ -21,10 +21,13 @@ body {
 	top: 0;
 	left: 0;
 	right: 0;
-	background: #fff;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	background: rgba(255, 255, 255, 0.6);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 	z-index: 1000;
 	padding: 1rem 0;
+	transition: background 0.3s ease;
 }
 
 .header-container {
@@ -38,6 +41,9 @@ body {
 
 .site-branding {
 	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
+	min-height: 60px;
 }
 
 .site-logo-link {
@@ -45,17 +51,65 @@ body {
 	color: #1a365d;
 	font-weight: 700;
 	font-size: 1.25rem;
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.custom-logo-link {
+	display: flex;
+	align-items: center;
+	text-decoration: none;
 }
 
 .custom-logo {
 	max-height: 60px;
 	width: auto;
+	height: auto;
+	display: block;
+}
+
+/* SVG logo support */
+.custom-logo,
+.custom-logo img,
+.custom-logo svg,
+.custom-logo-link,
+.custom-logo-link img,
+.custom-logo-link svg,
+.custom-logo-svg {
+	max-height: 60px;
+	width: auto;
+	height: auto;
+	display: block;
+}
+
+/* Ensure SVG logos are visible and properly sized */
+.custom-logo-link svg,
+.custom-logo-svg {
+	fill: currentColor;
+	max-width: 200px;
+	height: auto;
+}
+
+/* Fallback for SVG as img tag */
+.custom-logo-link img[src$=".svg"] {
+	width: auto;
+	height: 60px;
+	max-width: 200px;
+}
+
+/* Site title fallback styling */
+.site-title {
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: #1a365d;
 }
 
 .main-navigation {
 	flex: 1 1 auto;
 	display: flex;
 	justify-content: center;
+	align-items: center;
 }
 
 .nav-menu {
@@ -64,17 +118,34 @@ body {
 	margin: 0;
 	padding: 0;
 	gap: 2rem;
+	align-items: center;
+}
+
+.nav-menu li {
+	position: relative;
 }
 
 .nav-menu a {
 	text-decoration: none;
 	color: #333;
 	font-weight: 500;
+	font-size: 0.9375rem;
 	transition: color 0.3s ease;
+	padding: 0.5rem 0;
+	display: block;
 }
 
 .nav-menu a:hover {
-	color: #60a5fa;
+	color: #1a365d;
+}
+
+/* Dropdown indicator */
+.nav-menu .menu-item-has-children > a::after {
+	content: '▼';
+	font-size: 0.625rem;
+	margin-left: 0.25rem;
+	display: inline-block;
+	vertical-align: middle;
 }
 
 .menu-toggle {
@@ -93,22 +164,30 @@ body {
 	display: inline-block;
 	padding: 0.625rem 1.25rem;
 	background: #fff;
-	border: 2px solid #60a5fa;
+	border: 2px solid #1a365d;
 	color: #1a365d;
 	text-decoration: none;
-	border-radius: 4px;
+	border-radius: 6px;
 	font-weight: 500;
+	font-size: 0.9375rem;
 	transition: all 0.3s ease;
+	white-space: nowrap;
 }
 
 .btn-primary:hover {
-	background: #60a5fa;
+	background: #1a365d;
 	color: #fff;
 }
 
 /* Main Content */
 .site-main {
 	margin-top: 80px; /* Account for fixed header */
+}
+
+/* Ensure hero section starts at top (header will overlay) */
+.hero-block {
+	margin-top: -80px;
+	padding-top: 80px;
 }
 
 /* Footer */

@@ -17,7 +17,15 @@ function nisson_therapy_setup() {
 	add_theme_support( 'title-tag' );
 	add_theme_support( 'post-thumbnails' );
 	add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption' ) );
-	add_theme_support( 'custom-logo' );
+	add_theme_support(
+		'custom-logo',
+		array(
+			'height'      => 80,
+			'width'       => 200,
+			'flex-height' => true,
+			'flex-width'  => true,
+		)
+	);
 	add_theme_support( 'menus' );
 	add_theme_support( 'align-wide' );
 
@@ -30,6 +38,118 @@ function nisson_therapy_setup() {
 	);
 }
 add_action( 'after_setup_theme', 'nisson_therapy_setup' );
+
+/**
+ * Allow SVG uploads in media library
+ */
+function nisson_therapy_allow_svg_upload( $mimes ) {
+	$mimes['svg'] = 'image/svg+xml';
+	$mimes['svgz'] = 'image/svg+xml';
+	return $mimes;
+}
+add_filter( 'upload_mimes', 'nisson_therapy_allow_svg_upload' );
+
+/**
+ * Make WordPress recognize SVG as image type
+ */
+function nisson_therapy_svg_is_image( $result, $path ) {
+	if ( $result !== null ) {
+		return $result;
+	}
+	$ext = strtolower( pathinfo( $path, PATHINFO_EXTENSION ) );
+	if ( $ext === 'svg' ) {
+		return true;
+	}
+	return $result;
+}
+add_filter( 'file_is_displayable_image', 'nisson_therapy_svg_is_image', 10, 2 );
+
+/**
+ * Fix SVG attachment metadata
+ */
+function nisson_therapy_fix_svg_metadata( $metadata, $attachment_id ) {
+	if ( get_post_mime_type( $attachment_id ) === 'image/svg+xml' ) {
+		$svg_path = get_attached_file( $attachment_id );
+		if ( $svg_path && file_exists( $svg_path ) ) {
+			$svg_content = @file_get_contents( $svg_path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+			if ( $svg_content && preg_match( '/<svg[^>]*width=["\']([^"\']+)["\']/', $svg_content, $width_match ) && preg_match( '/<svg[^>]*height=["\']([^"\']+)["\']/', $svg_content, $height_match ) ) {
+				$width = (int) $width_match[1];
+				$height = (int) $height_match[1];
+				$metadata['width'] = $width;
+				$metadata['height'] = $height;
+			} else {
+				// Default SVG dimensions if not specified
+				$metadata['width'] = 512;
+				$metadata['height'] = 512;
+			}
+		}
+	}
+	return $metadata;
+}
+add_filter( 'wp_generate_attachment_metadata', 'nisson_therapy_fix_svg_metadata', 10, 2 );
+
+/**
+ * Fix SVG display in media library
+ */
+function nisson_therapy_fix_svg_thumbnails() {
+	echo '<style>
+		.attachment-266x266, .thumbnail img {
+			width: 100% !important;
+			height: auto !important;
+		}
+	</style>';
+}
+add_action( 'admin_head', 'nisson_therapy_fix_svg_thumbnails' );
+
+/**
+ * Ensure SVG logos display correctly
+ */
+function nisson_therapy_custom_logo_output( $html, $blog_id = 0 ) {
+	// Get the logo ID
+	$custom_logo_id = get_theme_mod( 'custom_logo' );
+	if ( ! $custom_logo_id ) {
+		return $html;
+	}
+
+	// Get the attachment file URL
+	$logo_url = wp_get_attachment_image_url( $custom_logo_id, 'full' );
+	if ( ! $logo_url ) {
+		return $html;
+	}
+
+	// Check if it's an SVG by file extension
+	$file_ext = strtolower( pathinfo( $logo_url, PATHINFO_EXTENSION ) );
+	if ( $file_ext === 'svg' ) {
+		// For SVG, output directly using the URL (WordPress will handle it as img src)
+		// But we can also try to inline it for better control
+		$logo_path = get_attached_file( $custom_logo_id );
+		if ( $logo_path && file_exists( $logo_path ) ) {
+			$svg_content = file_get_contents( $logo_path );
+			if ( $svg_content ) {
+				// Clean up SVG content
+				$svg_content = preg_replace( '/<\?xml[^>]*\?>/i', '', $svg_content );
+				$svg_content = preg_replace( '/<!DOCTYPE[^>]*>/i', '', $svg_content );
+				$svg_content = trim( $svg_content );
+				
+				// Add class to SVG for styling
+				if ( strpos( $svg_content, 'class=' ) === false ) {
+					$svg_content = preg_replace( '/<svg/i', '<svg class="custom-logo-svg"', $svg_content );
+				}
+				
+				// Create the logo link
+				$home_url = esc_url( home_url( '/' ) );
+				$html = sprintf(
+					'<a href="%1$s" class="custom-logo-link" rel="home">%2$s</a>',
+					$home_url,
+					$svg_content
+				);
+			}
+		}
+	}
+
+	return $html;
+}
+add_filter( 'get_custom_logo', 'nisson_therapy_custom_logo_output', 10, 2 );
 
 /**
  * Enqueue theme styles and scripts
