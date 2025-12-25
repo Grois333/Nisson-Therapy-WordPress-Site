@@ -262,6 +262,14 @@ function nisson_therapy_scripts() {
 		$theme_version,
 		true
 	);
+
+	// CTA block styles
+	wp_enqueue_style(
+		'nisson-therapy-cta',
+		get_template_directory_uri() . '/blocks/cta/cta.css',
+		array(),
+		$theme_version
+	);
 }
 add_action( 'wp_enqueue_scripts', 'nisson_therapy_scripts' );
 
@@ -299,6 +307,14 @@ function nisson_therapy_editor_styles() {
 	wp_enqueue_style(
 		'nisson-therapy-services-editor',
 		get_template_directory_uri() . '/blocks/services/services.css',
+		array(),
+		$theme_version
+	);
+
+	// CTA block styles in editor
+	wp_enqueue_style(
+		'nisson-therapy-cta-editor',
+		get_template_directory_uri() . '/blocks/cta/cta.css',
 		array(),
 		$theme_version
 	);
@@ -523,6 +539,54 @@ function nisson_therapy_register_acf_blocks() {
 			error_log( 'NISSON THERAPY SUCCESS: Services block registered as acf/nt-services-section' );
 		} else {
 			error_log( 'NISSON THERAPY ERROR: Failed to register Services block. Check ACF Pro is active.' );
+		}
+	}
+
+	// CTA Block
+	$cta_template_file = get_template_directory() . '/blocks/cta/cta.php';
+	if ( file_exists( $cta_template_file ) ) {
+		$cta_block_args = array(
+			'name'            => 'nt-cta-section',
+			'title'           => __( '📞 CTA Section', 'nisson-therapy' ),
+			'description'     => __( 'Call-to-action section with title, subtitle, description, and button.', 'nisson-therapy' ),
+			'render_template' => $cta_template_file,
+			'category'        => 'nisson-therapy',
+			'icon'            => 'megaphone',
+			'keywords'        => array( 'cta', 'call to action', 'contact', 'nisson', 'therapy' ),
+			'supports'        => array(
+				'align' => false,
+				'anchor' => true,
+			),
+			'enqueue_style'   => get_template_directory_uri() . '/blocks/cta/cta.css',
+			'mode'            => 'preview',
+			'example'         => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'cta_title'       => 'Schedule a Free Consultation',
+						'cta_subtitle'    => 'A brief call to see if we are a good fit.',
+						'cta_description' => 'All conversations are confidential and handled with the utmost care.',
+					),
+				),
+			),
+		);
+
+		$cta_block_result = acf_register_block_type( $cta_block_args );
+
+		if ( function_exists( 'register_block_type' ) && $cta_block_result ) {
+			register_block_type(
+				'acf/nt-cta-section',
+				array(
+					'render_callback' => 'acf_render_block_callback',
+					'attributes'     => isset( $cta_block_result['attributes'] ) ? $cta_block_result['attributes'] : array(),
+				)
+			);
+		}
+
+		if ( $cta_block_result ) {
+			error_log( 'NISSON THERAPY SUCCESS: CTA block registered as acf/nt-cta-section' );
+		} else {
+			error_log( 'NISSON THERAPY ERROR: Failed to register CTA block. Check ACF Pro is active.' );
 		}
 	}
 }

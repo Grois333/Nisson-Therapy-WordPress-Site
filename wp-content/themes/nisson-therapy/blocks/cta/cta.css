@@ -1,0 +1,100 @@
+/**
+ * CTA Block Styles
+ */
+
+.cta-block {
+	padding: 4rem 2rem;
+	background: #e8edf0;
+}
+
+.cta-container {
+	max-width: 800px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.cta-title {
+	font-family: "Poppins", Sans-serif;
+	font-size: 2.5rem;
+	font-weight: 700;
+	line-height: 1.2;
+	color: #2c3e50;
+	margin: 0 0 1.5rem;
+}
+
+.cta-subtitle {
+	font-family: "Poppins", Sans-serif;
+	font-size: 1.25rem;
+	font-weight: 400;
+	line-height: 1.6;
+	color: #2c3e50;
+	margin: 0 0 1rem;
+}
+
+.cta-subtitle strong {
+	font-weight: 600;
+}
+
+.cta-description {
+	font-family: "Poppins", Sans-serif;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.6;
+	color: #2c3e50;
+	margin: 0 0 2rem;
+}
+
+.cta-button-wrapper {
+	margin-top: 2rem;
+}
+
+.btn-cta {
+	display: inline-block;
+	padding: 1rem 2.5rem;
+	background: #326281;
+	border: 2px solid #326281;
+	border-radius: 50px;
+	color: #fff;
+	font-family: "Poppins", Sans-serif;
+	font-size: 1.125rem;
+	font-weight: 600;
+	text-decoration: none;
+	transition: all 0.3s ease;
+	cursor: pointer;
+}
+
+.btn-cta:hover {
+	background: #2c3e50;
+	border-color: #2c3e50;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-cta:active {
+	transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.cta-block {
+		padding: 3rem 1.5rem;
+	}
+
+	.cta-title {
+		font-size: 2rem;
+	}
+
+	.cta-subtitle {
+		font-size: 1.125rem;
+	}
+
+	.cta-description {
+		font-size: 0.9375rem;
+	}
+
+	.btn-cta {
+		padding: 0.875rem 2rem;
+		font-size: 1rem;
+	}
+}
+

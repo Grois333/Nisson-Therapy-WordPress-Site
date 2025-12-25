@@ -288,6 +288,80 @@ function nisson_therapy_register_services_fields() {
 }
 
 /**
+ * Register CTA Section ACF Fields
+ */
+function nisson_therapy_register_cta_fields() {
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+		return;
+	}
+
+	acf_add_local_field_group(
+		array(
+			'key'    => 'group_nt_cta_section',
+			'title'  => 'NT CTA Section Fields',
+			'fields' => array(
+				array(
+					'key'           => 'field_nt_cta_title',
+					'label'         => 'Title',
+					'name'          => 'cta_title',
+					'type'          => 'text',
+					'instructions'  => 'Main title for the CTA section (e.g., "Schedule a Free Consultation")',
+					'required'      => 1,
+					'default_value' => 'Schedule a Free Consultation',
+					'placeholder'   => 'Schedule a Free Consultation',
+				),
+				array(
+					'key'           => 'field_nt_cta_subtitle',
+					'label'         => 'Subtitle',
+					'name'          => 'cta_subtitle',
+					'type'          => 'text',
+					'instructions'  => 'Subtitle text (will be displayed in bold)',
+					'required'      => 0,
+					'default_value' => 'A brief call to see if we are a good fit.',
+					'placeholder'   => 'A brief call to see if we are a good fit.',
+				),
+				array(
+					'key'           => 'field_nt_cta_description',
+					'label'         => 'Description',
+					'name'          => 'cta_description',
+					'type'          => 'text',
+					'instructions'  => 'Additional descriptive text',
+					'required'      => 0,
+					'default_value' => 'All conversations are confidential and handled with the utmost care.',
+					'placeholder'   => 'All conversations are confidential and handled with the utmost care.',
+				),
+				array(
+					'key'           => 'field_nt_cta_button',
+					'label'         => 'Button',
+					'name'          => 'cta_button',
+					'type'          => 'link',
+					'instructions'  => 'Call-to-action button link',
+					'required'      => 0,
+					'return_format' => 'array',
+				),
+			),
+			'location' => array(
+				array(
+					array(
+						'param'    => 'block',
+						'operator' => '==',
+						'value'    => 'acf/nt-cta-section',
+					),
+				),
+			),
+			'menu_order'            => 0,
+			'position'              => 'normal',
+			'style'                 => 'default',
+			'label_placement'       => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen'        => '',
+			'active'                => true,
+			'description'           => '',
+		)
+	);
+}
+
+/**
  * Register Header Settings ACF Fields
  */
 function nisson_therapy_register_header_fields() {
@@ -349,6 +423,7 @@ function nisson_therapy_register_all_acf_fields() {
 	nisson_therapy_register_hero_fields();
 	nisson_therapy_register_intro_fields();
 	nisson_therapy_register_services_fields();
+	nisson_therapy_register_cta_fields();
 	nisson_therapy_register_header_fields();
 }
 add_action( 'acf/init', 'nisson_therapy_register_all_acf_fields', 30 );
