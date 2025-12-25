@@ -1,0 +1,109 @@
+/**
+ * Intro Block Styles
+ */
+
+.intro-block {
+	padding: 4rem 2rem;
+	background: #e8edf0;
+}
+
+.intro-container {
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.intro-name {
+	font-family: "Poppins", Sans-serif;
+	font-size: 1rem;
+	font-weight: 400;
+	color: #2c3e50;
+	text-align: center;
+	margin: 0 0 1rem;
+}
+
+.intro-quote {
+	font-family: "Poppins", Sans-serif;
+	font-size: 1.75rem;
+	font-weight: 400;
+	line-height: 1.4;
+	color: #2c3e50;
+	text-align: center;
+	margin: 0 0 3rem;
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.intro-content-wrapper {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	gap: 3rem;
+	align-items: start;
+}
+
+.intro-image-wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+}
+
+.intro-image {
+	width: 100%;
+	max-width: 300px;
+	height: auto;
+	border-radius: 50%;
+	object-fit: cover;
+	aspect-ratio: 1 / 1;
+}
+
+.intro-text-wrapper {
+	display: flex;
+	align-items: flex-start;
+}
+
+.intro-text {
+	font-family: "Poppins", Sans-serif;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.8;
+	color: #2c3e50;
+}
+
+.intro-text p {
+	margin: 0 0 1.5rem;
+}
+
+.intro-text p:last-child {
+	margin-bottom: 0;
+}
+
+.intro-text strong {
+	font-weight: 600;
+	color: #2c3e50;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.intro-block {
+		padding: 3rem 1.5rem;
+	}
+
+	.intro-name {
+		font-size: 0.9375rem;
+	}
+
+	.intro-quote {
+		font-size: 1.5rem;
+		margin-bottom: 2rem;
+	}
+
+	.intro-content-wrapper {
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+
+	.intro-image {
+		max-width: 250px;
+	}
+}
+

@@ -237,6 +237,14 @@ function nisson_therapy_scripts() {
 		$theme_version,
 		true
 	);
+
+	// Intro block styles
+	wp_enqueue_style(
+		'nisson-therapy-intro',
+		get_template_directory_uri() . '/blocks/intro/intro.css',
+		array(),
+		$theme_version
+	);
 }
 add_action( 'wp_enqueue_scripts', 'nisson_therapy_scripts' );
 
@@ -258,6 +266,14 @@ function nisson_therapy_editor_styles() {
 	wp_enqueue_style(
 		'nisson-therapy-hero-editor',
 		get_template_directory_uri() . '/blocks/hero/hero.css',
+		array(),
+		$theme_version
+	);
+
+	// Intro block styles in editor
+	wp_enqueue_style(
+		'nisson-therapy-intro-editor',
+		get_template_directory_uri() . '/blocks/intro/intro.css',
 		array(),
 		$theme_version
 	);
@@ -383,6 +399,54 @@ function nisson_therapy_register_acf_blocks() {
 		error_log( 'NISSON THERAPY SUCCESS: Hero block registered as acf/nt-hero-section' );
 	} else {
 		error_log( 'NISSON THERAPY ERROR: Failed to register Hero block. Check ACF Pro is active.' );
+	}
+
+	// Intro Block
+	$intro_template_file = get_template_directory() . '/blocks/intro/intro.php';
+	if ( file_exists( $intro_template_file ) ) {
+		$intro_block_args = array(
+			'name'            => 'nt-intro-section',
+			'title'           => __( '📝 Intro Section', 'nisson-therapy' ),
+			'description'     => __( 'Introduction section with name, quote, image, and content in two columns.', 'nisson-therapy' ),
+			'render_template' => $intro_template_file,
+			'category'        => 'nisson-therapy',
+			'icon'            => 'admin-users',
+			'keywords'        => array( 'intro', 'about', 'introduction', 'nisson', 'therapy' ),
+			'supports'        => array(
+				'align' => false,
+				'anchor' => true,
+			),
+			'enqueue_style'   => get_template_directory_uri() . '/blocks/intro/intro.css',
+			'mode'            => 'preview',
+			'example'         => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'intro_name'    => 'Mary DiOrio, Therapist',
+						'intro_quote'   => 'Seeing yourself differently is often the first step to living the life you truly want to live.',
+						'intro_content' => '<p>You may be functioning on the outside, but inside it might feel noisy, tense, or fragmented.</p><p>Parts of you want relief, parts want control, parts want to shut things down, and other parts are just exhausted.</p>',
+					),
+				),
+			),
+		);
+
+		$intro_block_result = acf_register_block_type( $intro_block_args );
+
+		if ( function_exists( 'register_block_type' ) && $intro_block_result ) {
+			register_block_type(
+				'acf/nt-intro-section',
+				array(
+					'render_callback' => 'acf_render_block_callback',
+					'attributes'     => isset( $intro_block_result['attributes'] ) ? $intro_block_result['attributes'] : array(),
+				)
+			);
+		}
+
+		if ( $intro_block_result ) {
+			error_log( 'NISSON THERAPY SUCCESS: Intro block registered as acf/nt-intro-section' );
+		} else {
+			error_log( 'NISSON THERAPY ERROR: Failed to register Intro block. Check ACF Pro is active.' );
+		}
 	}
 }
 add_action( 'acf/init', 'nisson_therapy_register_acf_blocks', 20 );
