@@ -245,6 +245,23 @@ function nisson_therapy_scripts() {
 		array(),
 		$theme_version
 	);
+
+	// Services block styles
+	wp_enqueue_style(
+		'nisson-therapy-services',
+		get_template_directory_uri() . '/blocks/services/services.css',
+		array(),
+		$theme_version
+	);
+
+	// Services block JavaScript
+	wp_enqueue_script(
+		'nisson-therapy-services',
+		get_template_directory_uri() . '/blocks/services/services.js',
+		array(),
+		$theme_version,
+		true
+	);
 }
 add_action( 'wp_enqueue_scripts', 'nisson_therapy_scripts' );
 
@@ -274,6 +291,14 @@ function nisson_therapy_editor_styles() {
 	wp_enqueue_style(
 		'nisson-therapy-intro-editor',
 		get_template_directory_uri() . '/blocks/intro/intro.css',
+		array(),
+		$theme_version
+	);
+
+	// Services block styles in editor
+	wp_enqueue_style(
+		'nisson-therapy-services-editor',
+		get_template_directory_uri() . '/blocks/services/services.css',
 		array(),
 		$theme_version
 	);
@@ -446,6 +471,58 @@ function nisson_therapy_register_acf_blocks() {
 			error_log( 'NISSON THERAPY SUCCESS: Intro block registered as acf/nt-intro-section' );
 		} else {
 			error_log( 'NISSON THERAPY ERROR: Failed to register Intro block. Check ACF Pro is active.' );
+		}
+	}
+
+	// Services Block
+	$services_template_file = get_template_directory() . '/blocks/services/services.php';
+	if ( file_exists( $services_template_file ) ) {
+		$services_block_args = array(
+			'name'            => 'nt-services-section',
+			'title'           => __( '🎴 Services Section', 'nisson-therapy' ),
+			'description'     => __( 'Services section with repeater cards that have scroll-based blur effects.', 'nisson-therapy' ),
+			'render_template' => $services_template_file,
+			'category'        => 'nisson-therapy',
+			'icon'            => 'grid-view',
+			'keywords'        => array( 'services', 'cards', 'repeater', 'nisson', 'therapy' ),
+			'supports'        => array(
+				'align' => false,
+				'anchor' => true,
+			),
+			'enqueue_style'   => get_template_directory_uri() . '/blocks/services/services.css',
+			'enqueue_script'  => get_template_directory_uri() . '/blocks/services/services.js',
+			'mode'            => 'preview',
+			'example'         => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'services_cards' => array(
+							array(
+								'title'       => 'Learn to tame Anxiety',
+								'description' => 'I also specialize in treating anxiety that often stems from difficult life transitions such as divorce, bereavement, sudden career changes, and many cumulative causes.',
+							),
+						),
+					),
+				),
+			),
+		);
+
+		$services_block_result = acf_register_block_type( $services_block_args );
+
+		if ( function_exists( 'register_block_type' ) && $services_block_result ) {
+			register_block_type(
+				'acf/nt-services-section',
+				array(
+					'render_callback' => 'acf_render_block_callback',
+					'attributes'     => isset( $services_block_result['attributes'] ) ? $services_block_result['attributes'] : array(),
+				)
+			);
+		}
+
+		if ( $services_block_result ) {
+			error_log( 'NISSON THERAPY SUCCESS: Services block registered as acf/nt-services-section' );
+		} else {
+			error_log( 'NISSON THERAPY ERROR: Failed to register Services block. Check ACF Pro is active.' );
 		}
 	}
 }

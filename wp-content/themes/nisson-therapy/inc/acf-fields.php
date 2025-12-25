@@ -198,6 +198,96 @@ function nisson_therapy_register_intro_fields() {
 }
 
 /**
+ * Register Services Section ACF Fields
+ */
+function nisson_therapy_register_services_fields() {
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+		return;
+	}
+
+	acf_add_local_field_group(
+		array(
+			'key'    => 'group_nt_services_section',
+			'title'  => 'NT Services Section Fields',
+			'fields' => array(
+				array(
+					'key'          => 'field_nt_services_cards',
+					'label'        => 'Service Cards',
+					'name'         => 'services_cards',
+					'type'         => 'repeater',
+					'instructions' => 'Add service cards. Each card will have a blur effect that clears when scrolled to center.',
+					'required'     => 0,
+					'layout'       => 'block',
+					'button_label' => 'Add Service Card',
+					'sub_fields'   => array(
+						array(
+							'key'           => 'field_nt_service_title',
+							'label'         => 'Title',
+							'name'          => 'title',
+							'type'          => 'text',
+							'instructions'  => 'Main headline for the card (e.g., "Learn to tame Anxiety")',
+							'required'      => 1,
+							'default_value' => '',
+							'placeholder'   => 'Learn to tame Anxiety',
+						),
+						array(
+							'key'           => 'field_nt_service_description',
+							'label'         => 'Description',
+							'name'          => 'description',
+							'type'          => 'wysiwyg',
+							'instructions'  => 'Description text displayed below the title. You can add bullet points using the list button.',
+							'required'      => 0,
+							'default_value' => '',
+							'tabs'          => 'all',
+							'toolbar'       => 'full',
+							'media_upload'  => 0,
+							'delay'         => 0,
+						),
+						array(
+							'key'           => 'field_nt_service_background_image',
+							'label'         => 'Background Image',
+							'name'          => 'background_image',
+							'type'          => 'image',
+							'instructions'  => 'Background image for the card',
+							'required'      => 0,
+							'return_format' => 'id',
+							'preview_size'  => 'medium',
+							'library'       => 'all',
+						),
+						array(
+							'key'           => 'field_nt_service_link',
+							'label'         => 'Link',
+							'name'          => 'link',
+							'type'          => 'link',
+							'instructions'  => 'Optional link for the "Learn more" button',
+							'required'      => 0,
+							'return_format' => 'array',
+						),
+					),
+				),
+			),
+			'location' => array(
+				array(
+					array(
+						'param'    => 'block',
+						'operator' => '==',
+						'value'    => 'acf/nt-services-section',
+					),
+				),
+			),
+			'menu_order'            => 0,
+			'position'              => 'normal',
+			'style'                 => 'default',
+			'label_placement'       => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen'        => '',
+			'active'                => true,
+			'description'           => '',
+		)
+	);
+}
+
+/**
  * Register Header Settings ACF Fields
  */
 function nisson_therapy_register_header_fields() {
@@ -258,6 +348,7 @@ function nisson_therapy_register_header_fields() {
 function nisson_therapy_register_all_acf_fields() {
 	nisson_therapy_register_hero_fields();
 	nisson_therapy_register_intro_fields();
+	nisson_therapy_register_services_fields();
 	nisson_therapy_register_header_fields();
 }
 add_action( 'acf/init', 'nisson_therapy_register_all_acf_fields', 30 );
