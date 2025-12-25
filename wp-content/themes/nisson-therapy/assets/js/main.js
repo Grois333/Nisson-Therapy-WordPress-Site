@@ -84,5 +84,45 @@
 		});
 	});
 
+	// Back to top button
+	const backToTopButton = document.getElementById('back-to-top');
+	
+	if (backToTopButton) {
+		// Show/hide button based on scroll position
+		function toggleBackToTop() {
+			if (window.pageYOffset > 300) {
+				backToTopButton.classList.add('show');
+			} else {
+				backToTopButton.classList.remove('show');
+			}
+		}
+
+		// Scroll to top when button is clicked
+		backToTopButton.addEventListener('click', function(e) {
+			e.preventDefault();
+			window.scrollTo({
+				top: 0,
+				behavior: 'smooth'
+			});
+		});
+
+		// Check scroll position on scroll
+		let ticking = false;
+		function onScroll() {
+			if (!ticking) {
+				window.requestAnimationFrame(() => {
+					toggleBackToTop();
+					ticking = false;
+				});
+				ticking = true;
+			}
+		}
+
+		window.addEventListener('scroll', onScroll, { passive: true });
+		
+		// Initial check
+		toggleBackToTop();
+	}
+
 })();
 
