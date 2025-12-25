@@ -613,6 +613,14 @@ function nisson_therapy_acf_options_page() {
 				'parent_slug' => 'theme-settings',
 			)
 		);
+
+		acf_add_options_sub_page(
+			array(
+				'page_title'  => __( 'Footer Settings', 'nisson-therapy' ),
+				'menu_title'  => __( 'Footer', 'nisson-therapy' ),
+				'parent_slug' => 'theme-settings',
+			)
+		);
 	}
 }
 add_action( 'acf/init', 'nisson_therapy_acf_options_page' );

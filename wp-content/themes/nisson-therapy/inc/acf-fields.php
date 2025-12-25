@@ -399,7 +399,123 @@ function nisson_therapy_register_header_fields() {
 					array(
 						'param'    => 'options_page',
 						'operator' => '==',
-						'value'    => 'theme-settings',
+						'value'    => 'acf-options-header',
+					),
+				),
+			),
+			'menu_order'            => 0,
+			'position'              => 'normal',
+			'style'                 => 'default',
+			'label_placement'       => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen'        => '',
+			'active'                => true,
+			'description'           => '',
+		)
+	);
+}
+
+/**
+ * Register Footer Settings ACF Fields
+ */
+function nisson_therapy_register_footer_fields() {
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+		return;
+	}
+
+	acf_add_local_field_group(
+		array(
+			'key'    => 'group_nisson_footer_settings',
+			'title'  => 'Nisson Footer Settings',
+			'fields' => array(
+				array(
+					'key'           => 'field_nisson_footer_logo_image',
+					'label'         => 'Footer Logo',
+					'name'          => 'footer_logo_image',
+					'type'          => 'image',
+					'instructions'  => 'Logo to display in the footer',
+					'required'      => 0,
+					'return_format' => 'id',
+					'preview_size'  => 'medium',
+					'library'       => 'all',
+				),
+				array(
+					'key'          => 'field_nisson_footer_links',
+					'label'        => 'Footer Links',
+					'name'         => 'footer_links',
+					'type'         => 'repeater',
+					'instructions' => 'Add navigation links for the footer',
+					'required'     => 0,
+					'layout'       => 'table',
+					'button_label' => 'Add Link',
+					'sub_fields'   => array(
+						array(
+							'key'           => 'field_nisson_footer_link',
+							'label'         => 'Link',
+							'name'          => 'link',
+							'type'          => 'link',
+							'required'      => 1,
+							'return_format' => 'array',
+						),
+					),
+				),
+				array(
+					'key'           => 'field_nisson_footer_phone_label',
+					'label'         => 'Phone Label',
+					'name'          => 'footer_phone_label',
+					'type'          => 'text',
+					'instructions' => 'Label for phone section (e.g., "Phone: Call or text")',
+					'required'      => 0,
+					'default_value' => 'Phone: Call or text',
+					'placeholder'   => 'Phone: Call or text',
+				),
+				array(
+					'key'           => 'field_nisson_footer_phone_israel',
+					'label'         => 'Israel Phone',
+					'name'          => 'footer_phone_israel',
+					'type'          => 'text',
+					'instructions'  => 'Israel phone number',
+					'required'      => 0,
+					'default_value' => '053-986-2857',
+					'placeholder'   => '053-986-2857',
+				),
+				array(
+					'key'           => 'field_nisson_footer_phone_us',
+					'label'         => 'US Phone',
+					'name'          => 'footer_phone_us',
+					'type'          => 'text',
+					'instructions'  => 'US phone number',
+					'required'      => 0,
+					'default_value' => '845-704-4443',
+					'placeholder'   => '845-704-4443',
+				),
+				array(
+					'key'           => 'field_nisson_footer_location',
+					'label'         => 'Location',
+					'name'          => 'footer_location',
+					'type'          => 'text',
+					'instructions'  => 'Location information',
+					'required'      => 0,
+					'default_value' => 'Telehealth or phone sessions',
+					'placeholder'   => 'Telehealth or phone sessions',
+				),
+				array(
+					'key'           => 'field_nisson_footer_confidentiality',
+					'label'         => 'Confidentiality Notice',
+					'name'          => 'footer_confidentiality',
+					'type'          => 'text',
+					'instructions'  => 'Confidentiality notice text',
+					'required'      => 0,
+					'default_value' => 'All conversations are confidential and handled with the utmost care.',
+					'placeholder'   => 'All conversations are confidential and handled with the utmost care.',
+				),
+			),
+			'location' => array(
+				array(
+					array(
+						'param'    => 'options_page',
+						'operator' => '==',
+						'value'    => 'acf-options-footer',
 					),
 				),
 			),
@@ -425,6 +541,7 @@ function nisson_therapy_register_all_acf_fields() {
 	nisson_therapy_register_services_fields();
 	nisson_therapy_register_cta_fields();
 	nisson_therapy_register_header_fields();
+	nisson_therapy_register_footer_fields();
 }
 add_action( 'acf/init', 'nisson_therapy_register_all_acf_fields', 30 );
 
