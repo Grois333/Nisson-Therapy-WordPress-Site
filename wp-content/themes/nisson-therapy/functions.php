@@ -326,6 +326,22 @@ function nisson_therapy_editor_styles() {
 		array(),
 		$theme_version
 	);
+
+	// Approach block styles in editor
+	wp_enqueue_style(
+		'nisson-therapy-approach-editor',
+		get_template_directory_uri() . '/blocks/approach/approach.css',
+		array(),
+		$theme_version
+	);
+
+	// CTA Image block styles in editor
+	wp_enqueue_style(
+		'nisson-therapy-cta-image-editor',
+		get_template_directory_uri() . '/blocks/cta-image/cta-image.css',
+		array(),
+		$theme_version
+	);
 	
 	// Main theme styles in editor (for consistent preview)
 	wp_enqueue_style(
@@ -644,6 +660,109 @@ function nisson_therapy_register_acf_blocks() {
 			error_log( 'NISSON THERAPY SUCCESS: About block registered as acf/nt-about-section' );
 		} else {
 			error_log( 'NISSON THERAPY ERROR: Failed to register About block. Check ACF Pro is active.' );
+		}
+	}
+
+	// Approach Block
+	$approach_template_file = get_template_directory() . '/blocks/approach/approach.php';
+	if ( file_exists( $approach_template_file ) ) {
+		$approach_block_args = array(
+			'name'            => 'nt-approach-section',
+			'title'           => __( '🎯 Approach Section', 'nisson-therapy' ),
+			'description'     => __( 'Approach section with dark blue top section and card grid below.', 'nisson-therapy' ),
+			'render_template' => $approach_template_file,
+			'category'        => 'nisson-therapy',
+			'icon'            => 'grid-view',
+			'keywords'        => array( 'approach', 'cards', 'grid', 'nisson', 'therapy' ),
+			'supports'        => array(
+				'align' => false,
+				'anchor' => true,
+			),
+			'enqueue_style'   => get_template_directory_uri() . '/blocks/approach/approach.css',
+			'mode'            => 'preview',
+			'example'         => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'approach_title'    => 'My Approach',
+						'approach_subtitle' => 'Inside each of us are different "parts": protective, wounded, or reactive, each doing its best to help.',
+						'approach_cards'    => array(
+							array(
+								'title'       => 'Identify and understand internal parts',
+								'description' => 'We work together to recognize and understand the different parts within you.',
+							),
+						),
+					),
+				),
+			),
+		);
+
+		$approach_block_result = acf_register_block_type( $approach_block_args );
+
+		if ( function_exists( 'register_block_type' ) && $approach_block_result ) {
+			register_block_type(
+				'acf/nt-approach-section',
+				array(
+					'render_callback' => 'acf_render_block_callback',
+					'attributes'     => isset( $approach_block_result['attributes'] ) ? $approach_block_result['attributes'] : array(),
+				)
+			);
+		}
+
+		if ( $approach_block_result ) {
+			error_log( 'NISSON THERAPY SUCCESS: Approach block registered as acf/nt-approach-section' );
+		} else {
+			error_log( 'NISSON THERAPY ERROR: Failed to register Approach block. Check ACF Pro is active.' );
+		}
+	}
+
+	// CTA Image Block
+	$cta_image_template_file = get_template_directory() . '/blocks/cta-image/cta-image.php';
+	if ( file_exists( $cta_image_template_file ) ) {
+		$cta_image_block_args = array(
+			'name'            => 'nt-cta-image-section',
+			'title'           => __( '🖼️ CTA with Image', 'nisson-therapy' ),
+			'description'     => __( 'Call-to-action section with background image, title, and button.', 'nisson-therapy' ),
+			'render_template' => $cta_image_template_file,
+			'category'        => 'nisson-therapy',
+			'icon'            => 'format-image',
+			'keywords'        => array( 'cta', 'call to action', 'image', 'background', 'nisson', 'therapy' ),
+			'supports'        => array(
+				'align' => false,
+				'anchor' => true,
+			),
+			'enqueue_style'   => get_template_directory_uri() . '/blocks/cta-image/cta-image.css',
+			'mode'            => 'preview',
+			'example'         => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'cta_image_title' => 'Ready to see yourself in a different light?',
+						'cta_image_button' => array(
+							'url'   => '#',
+							'title' => 'Schedule A Free 15 Minute Consultation',
+						),
+					),
+				),
+			),
+		);
+
+		$cta_image_block_result = acf_register_block_type( $cta_image_block_args );
+
+		if ( function_exists( 'register_block_type' ) && $cta_image_block_result ) {
+			register_block_type(
+				'acf/nt-cta-image-section',
+				array(
+					'render_callback' => 'acf_render_block_callback',
+					'attributes'     => isset( $cta_image_block_result['attributes'] ) ? $cta_image_block_result['attributes'] : array(),
+				)
+			);
+		}
+
+		if ( $cta_image_block_result ) {
+			error_log( 'NISSON THERAPY SUCCESS: CTA Image block registered as acf/nt-cta-image-section' );
+		} else {
+			error_log( 'NISSON THERAPY ERROR: Failed to register CTA Image block. Check ACF Pro is active.' );
 		}
 	}
 }

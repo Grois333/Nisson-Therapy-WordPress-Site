@@ -462,6 +462,189 @@ function nisson_therapy_register_about_fields() {
 }
 
 /**
+ * Register Approach Section ACF Fields
+ */
+function nisson_therapy_register_approach_fields() {
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+		return;
+	}
+
+	acf_add_local_field_group(
+		array(
+			'key'    => 'group_nt_approach_section',
+			'title'  => 'NT Approach Section Fields',
+			'fields' => array(
+				array(
+					'key'           => 'field_nt_approach_title',
+					'label'         => 'Title',
+					'name'          => 'approach_title',
+					'type'          => 'text',
+					'instructions'  => 'Main title displayed in the dark blue top section (e.g., "My Approach")',
+					'required'      => 0,
+					'default_value' => 'My Approach',
+					'placeholder'   => 'My Approach',
+				),
+				array(
+					'key'           => 'field_nt_approach_subtitle',
+					'label'         => 'Subtitle',
+					'name'          => 'approach_subtitle',
+					'type'          => 'textarea',
+					'instructions'  => 'Subtitle text displayed below the title in the dark blue section',
+					'required'      => 0,
+					'default_value' => 'Inside each of us are different "parts": protective, wounded, or reactive, each doing its best to help. Symptoms are signals, not flaws. At your core is a calm, confident Self. Therapy helps you meet that Self, trust it, and let it lead.',
+					'placeholder'   => 'Inside each of us are different "parts": protective, wounded, or reactive, each doing its best to help.',
+					'rows'          => 4,
+				),
+				array(
+					'key'          => 'field_nt_approach_cards',
+					'label'        => 'Approach Cards',
+					'name'         => 'approach_cards',
+					'type'         => 'repeater',
+					'instructions' => 'Add approach cards. Each card will be displayed in a grid layout.',
+					'required'     => 0,
+					'layout'       => 'block',
+					'button_label' => 'Add Card',
+					'sub_fields'   => array(
+						array(
+							'key'           => 'field_nt_approach_card_icon',
+							'label'         => 'Icon',
+							'name'          => 'icon',
+							'type'          => 'select',
+							'instructions'  => 'Select an icon for this card (optional - will auto-assign if not selected)',
+							'required'      => 0,
+							'choices'       => array(
+								'identify'    => 'Identify/Checkmark',
+								'help'        => 'Help/Question',
+								'heal'        => 'Heal/Star',
+								'strengthen'  => 'Strengthen/Layers',
+							),
+							'default_value' => '',
+							'allow_null'    => 1,
+							'multiple'      => 0,
+						),
+						array(
+							'key'           => 'field_nt_approach_card_title',
+							'label'         => 'Card Title',
+							'name'          => 'title',
+							'type'          => 'text',
+							'instructions'  => 'Title for the card (e.g., "Identify and understand internal parts")',
+							'required'      => 1,
+							'default_value' => '',
+							'placeholder'   => 'Identify and understand internal parts',
+						),
+						array(
+							'key'           => 'field_nt_approach_card_description',
+							'label'         => 'Card Description',
+							'name'          => 'description',
+							'type'          => 'wysiwyg',
+							'instructions'  => 'Description text for the card. You can use formatting like bold, lists, etc.',
+							'required'      => 0,
+							'default_value' => '',
+							'tabs'          => 'all',
+							'toolbar'       => 'full',
+							'media_upload'  => 0,
+							'delay'         => 0,
+						),
+					),
+				),
+				array(
+					'key'           => 'field_nt_approach_footer_text',
+					'label'         => 'Footer Text',
+					'name'          => 'approach_footer_text',
+					'type'          => 'text',
+					'instructions'  => 'Optional footer text displayed below the cards (e.g., "This work is experiential, respectful, and deeply human.")',
+					'required'      => 0,
+					'default_value' => 'This work is experiential, respectful, and deeply human.',
+					'placeholder'   => 'This work is experiential, respectful, and deeply human.',
+				),
+			),
+			'location' => array(
+				array(
+					array(
+						'param'    => 'block',
+						'operator' => '==',
+						'value'    => 'acf/nt-approach-section',
+					),
+				),
+			),
+			'menu_order'            => 0,
+			'position'              => 'normal',
+			'style'                 => 'default',
+			'label_placement'       => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen'        => '',
+			'active'                => true,
+			'description'           => '',
+		)
+	);
+}
+
+/**
+ * Register CTA Image Section ACF Fields
+ */
+function nisson_therapy_register_cta_image_fields() {
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+		return;
+	}
+
+	acf_add_local_field_group(
+		array(
+			'key'    => 'group_nt_cta_image_section',
+			'title'  => 'NT CTA Image Section Fields',
+			'fields' => array(
+				array(
+					'key'           => 'field_nt_cta_image_bg',
+					'label'         => 'Background Image',
+					'name'          => 'cta_image_bg',
+					'type'          => 'image',
+					'instructions'  => 'Background image for the CTA section (will have a dark overlay)',
+					'required'      => 1,
+					'return_format' => 'id',
+					'preview_size'  => 'medium',
+					'library'       => 'all',
+				),
+				array(
+					'key'           => 'field_nt_cta_image_title',
+					'label'         => 'Title',
+					'name'          => 'cta_image_title',
+					'type'          => 'text',
+					'instructions'  => 'Main title displayed over the background image (e.g., "Ready to see yourself in a different light?")',
+					'required'      => 1,
+					'default_value' => 'Ready to see yourself in a different light?',
+					'placeholder'   => 'Ready to see yourself in a different light?',
+				),
+				array(
+					'key'           => 'field_nt_cta_image_button',
+					'label'         => 'Button',
+					'name'          => 'cta_image_button',
+					'type'          => 'link',
+					'instructions'  => 'Call-to-action button link',
+					'required'      => 1,
+					'return_format' => 'array',
+				),
+			),
+			'location' => array(
+				array(
+					array(
+						'param'    => 'block',
+						'operator' => '==',
+						'value'    => 'acf/nt-cta-image-section',
+					),
+				),
+			),
+			'menu_order'            => 0,
+			'position'              => 'normal',
+			'style'                 => 'default',
+			'label_placement'       => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen'        => '',
+			'active'                => true,
+			'description'           => '',
+		)
+	);
+}
+
+/**
  * Register Header Settings ACF Fields
  */
 function nisson_therapy_register_header_fields() {
@@ -641,6 +824,8 @@ function nisson_therapy_register_all_acf_fields() {
 	nisson_therapy_register_services_fields();
 	nisson_therapy_register_cta_fields();
 	nisson_therapy_register_about_fields();
+	nisson_therapy_register_approach_fields();
+	nisson_therapy_register_cta_image_fields();
 	nisson_therapy_register_header_fields();
 	nisson_therapy_register_footer_fields();
 }

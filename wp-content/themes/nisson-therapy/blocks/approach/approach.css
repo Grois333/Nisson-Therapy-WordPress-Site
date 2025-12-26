@@ -1,0 +1,167 @@
+/**
+ * Approach Block Styles
+ */
+
+.approach-block {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+/* Top Section */
+.approach-top-section {
+	background: #2c3e50;
+	padding: 4rem 0;
+	width: 100%;
+}
+
+.approach-top-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 2rem;
+	text-align: center;
+}
+
+.approach-title {
+	font-family: "Poppins", Sans-serif;
+	font-size: 2.5rem;
+	font-weight: 700;
+	color: #fff;
+	line-height: 1.2;
+	margin: 0 0 1.5rem;
+	text-align: center;
+}
+
+.approach-subtitle {
+	font-family: "Poppins", Sans-serif;
+	font-size: 1.125rem;
+	font-weight: 400;
+	color: #fff;
+	line-height: 1.8;
+	margin: 0;
+	text-align: center;
+	max-width: 900px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Cards Section */
+.approach-cards-section {
+	background: #e8edf0;
+	padding: 4rem 0;
+	width: 100%;
+}
+
+.approach-cards-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 2rem;
+}
+
+.approach-cards-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 2rem;
+	align-items: start;
+}
+
+.approach-card {
+	background: #fff;
+	border-radius: 8px;
+	padding: 2rem;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	align-items: center;
+}
+
+.approach-card-icon {
+	margin-bottom: 1.5rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.approach-card-icon svg {
+	width: 48px;
+	height: 48px;
+}
+
+.approach-card-title {
+	font-family: "Poppins", Sans-serif;
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: #2c3e50;
+	text-align: center;
+	margin: 0;
+	line-height: 1.3;
+}
+
+.approach-card-description {
+	font-family: "Poppins", Sans-serif;
+	font-size: 1rem;
+	font-weight: 400;
+	color: #2c3e50;
+	line-height: 1.8;
+	text-align: left;
+	flex-grow: 1;
+}
+
+.approach-card-description p {
+	margin: 0 0 1rem;
+}
+
+.approach-card-description p:last-child {
+	margin-bottom: 0;
+}
+
+.approach-footer-text {
+	margin-top: 3rem;
+	text-align: center;
+}
+
+.approach-footer-text p {
+	font-family: "Poppins", Sans-serif;
+	font-size: 1.125rem;
+	font-weight: 400;
+	color: #2c3e50;
+	line-height: 1.8;
+	margin: 0;
+	font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+	.approach-cards-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 767px) {
+	.approach-top-section {
+		padding: 3rem 0;
+	}
+
+	.approach-title {
+		font-size: 2rem;
+	}
+
+	.approach-subtitle {
+		font-size: 1rem;
+	}
+
+	.approach-cards-section {
+		padding: 3rem 0;
+	}
+
+	.approach-cards-grid {
+		grid-template-columns: 1fr;
+		gap: 1.5rem;
+	}
+
+	.approach-card {
+		padding: 1.5rem;
+	}
+}
+
