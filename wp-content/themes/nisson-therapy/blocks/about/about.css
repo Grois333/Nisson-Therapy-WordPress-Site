@@ -1,0 +1,167 @@
+/**
+ * About Block Styles
+ */
+
+.about-block {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+/* Top Section */
+.about-top-section {
+	position: relative;
+	width: 100%;
+	min-height: 40vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	overflow: hidden;
+}
+
+.about-top-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(255, 255, 255, 0.3);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	z-index: 1;
+}
+
+.about-top-container {
+	position: relative;
+	z-index: 2;
+	text-align: center;
+	padding: 3rem 2rem;
+	max-width: 1200px;
+	margin: 0 auto;
+	width: 100%;
+}
+
+.about-top-title {
+	font-family: "Poppins", Sans-serif;
+	font-size: 3.5rem;
+	font-weight: 700;
+	color: #2c3e50;
+	line-height: 1.2;
+	margin: 0;
+	text-align: center;
+}
+
+@media (max-width: 768px) {
+	.about-top-title {
+		font-size: 2.5rem;
+	}
+}
+
+/* Content Section */
+.about-content-section {
+	background: #e8edf0;
+	padding: 4rem 0;
+	width: 100%;
+}
+
+.about-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 2rem;
+}
+
+.about-title {
+	font-family: "Poppins", Sans-serif;
+	font-size: 2.5rem;
+	font-weight: 700;
+	color: #2c3e50;
+	text-align: center;
+	margin: 0 0 1rem;
+}
+
+.about-subtitle {
+	font-family: "Poppins", Sans-serif;
+	font-size: 1.125rem;
+	font-weight: 400;
+	color: #2c3e50;
+	text-align: center;
+	margin: 0 0 3rem;
+}
+
+.about-content-wrapper {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 4rem;
+	align-items: start;
+}
+
+.about-text-wrapper {
+	display: flex;
+	flex-direction: column;
+}
+
+.about-text {
+	font-family: "Poppins", Sans-serif;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.8;
+	color: #2c3e50;
+}
+
+.about-text p {
+	margin: 0 0 1.5rem;
+}
+
+.about-text p:last-child {
+	margin-bottom: 0;
+}
+
+.about-text strong {
+	font-weight: 600;
+	color: #2c3e50;
+}
+
+.about-image-wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.about-image {
+	width: 100%;
+	max-width: 400px;
+	height: 400px;
+	object-fit: cover;
+	border-radius: 50%;
+	aspect-ratio: 1 / 1;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+	.about-content-wrapper {
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+
+	.about-image-wrapper {
+		order: -1;
+	}
+
+	.about-image {
+		max-width: 300px;
+		height: 300px;
+	}
+
+	.about-title {
+		font-size: 2rem;
+	}
+
+	.about-subtitle {
+		font-size: 1rem;
+		margin-bottom: 2rem;
+	}
+}
+

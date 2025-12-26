@@ -362,6 +362,106 @@ function nisson_therapy_register_cta_fields() {
 }
 
 /**
+ * Register About Section ACF Fields
+ */
+function nisson_therapy_register_about_fields() {
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+		return;
+	}
+
+	acf_add_local_field_group(
+		array(
+			'key'    => 'group_nt_about_section',
+			'title'  => 'NT About Section Fields',
+			'fields' => array(
+				array(
+					'key'           => 'field_nt_about_top_title',
+					'label'         => 'Top Section H1 Title',
+					'name'          => 'about_top_title',
+					'type'          => 'text',
+					'instructions'  => 'Large H1 title displayed at the top of the section (e.g., "Are You Ready for Change?")',
+					'required'      => 0,
+					'default_value' => 'Are You Ready for Change?',
+					'placeholder'   => 'Are You Ready for Change?',
+				),
+				array(
+					'key'           => 'field_nt_about_top_bg_image',
+					'label'         => 'Top Section Background Image',
+					'name'          => 'about_top_bg_image',
+					'type'          => 'image',
+					'instructions'  => 'Background image for the top section (will be blurred/overlaid)',
+					'required'      => 0,
+					'return_format' => 'id',
+					'preview_size'  => 'medium',
+					'library'       => 'all',
+				),
+				array(
+					'key'           => 'field_nt_about_title',
+					'label'         => 'Main Title (H2)',
+					'name'          => 'about_title',
+					'type'          => 'text',
+					'instructions'  => 'Main H2 title for the about section (e.g., "About Mary DiOrio (She, Her, Her\'s)")',
+					'required'      => 0,
+					'default_value' => 'About Mary DiOrio (She, Her, Her\'s)',
+					'placeholder'   => 'About Mary DiOrio (She, Her, Her\'s)',
+				),
+				array(
+					'key'           => 'field_nt_about_subtitle',
+					'label'         => 'Subtitle',
+					'name'          => 'about_subtitle',
+					'type'          => 'text',
+					'instructions'  => 'Subtitle text displayed below the main title',
+					'required'      => 0,
+					'default_value' => 'Licensed Psychotherapist • Online Therapy in NY, NJ, OR & FL',
+					'placeholder'   => 'Licensed Psychotherapist • Online Therapy in NY, NJ, OR & FL',
+				),
+				array(
+					'key'           => 'field_nt_about_content',
+					'label'         => 'Content',
+					'name'          => 'about_content',
+					'type'          => 'wysiwyg',
+					'instructions'  => 'Main content text. You can use bold formatting and other formatting options.',
+					'required'      => 0,
+					'default_value' => '',
+					'tabs'          => 'all',
+					'toolbar'       => 'full',
+					'media_upload'  => 0,
+					'delay'         => 0,
+				),
+				array(
+					'key'           => 'field_nt_about_image',
+					'label'         => 'Image',
+					'name'          => 'about_image',
+					'type'          => 'image',
+					'instructions'  => 'Circular headshot image displayed on the right side',
+					'required'      => 0,
+					'return_format' => 'id',
+					'preview_size'  => 'medium',
+					'library'       => 'all',
+				),
+			),
+			'location' => array(
+				array(
+					array(
+						'param'    => 'block',
+						'operator' => '==',
+						'value'    => 'acf/nt-about-section',
+					),
+				),
+			),
+			'menu_order'            => 0,
+			'position'              => 'normal',
+			'style'                 => 'default',
+			'label_placement'       => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen'        => '',
+			'active'                => true,
+			'description'           => '',
+		)
+	);
+}
+
+/**
  * Register Header Settings ACF Fields
  */
 function nisson_therapy_register_header_fields() {
@@ -540,6 +640,7 @@ function nisson_therapy_register_all_acf_fields() {
 	nisson_therapy_register_intro_fields();
 	nisson_therapy_register_services_fields();
 	nisson_therapy_register_cta_fields();
+	nisson_therapy_register_about_fields();
 	nisson_therapy_register_header_fields();
 	nisson_therapy_register_footer_fields();
 }

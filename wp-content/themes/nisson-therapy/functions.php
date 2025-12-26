@@ -318,6 +318,14 @@ function nisson_therapy_editor_styles() {
 		array(),
 		$theme_version
 	);
+
+	// About block styles in editor
+	wp_enqueue_style(
+		'nisson-therapy-about-editor',
+		get_template_directory_uri() . '/blocks/about/about.css',
+		array(),
+		$theme_version
+	);
 	
 	// Main theme styles in editor (for consistent preview)
 	wp_enqueue_style(
@@ -587,6 +595,55 @@ function nisson_therapy_register_acf_blocks() {
 			error_log( 'NISSON THERAPY SUCCESS: CTA block registered as acf/nt-cta-section' );
 		} else {
 			error_log( 'NISSON THERAPY ERROR: Failed to register CTA block. Check ACF Pro is active.' );
+		}
+	}
+
+	// About Block
+	$about_template_file = get_template_directory() . '/blocks/about/about.php';
+	if ( file_exists( $about_template_file ) ) {
+		$about_block_args = array(
+			'name'            => 'nt-about-section',
+			'title'           => __( '👤 About Section', 'nisson-therapy' ),
+			'description'     => __( 'About section with top H1 title, main title, subtitle, WYSIWYG content, and circular image.', 'nisson-therapy' ),
+			'render_template' => $about_template_file,
+			'category'        => 'nisson-therapy',
+			'icon'            => 'admin-users',
+			'keywords'        => array( 'about', 'bio', 'introduction', 'nisson', 'therapy' ),
+			'supports'        => array(
+				'align' => false,
+				'anchor' => true,
+			),
+			'enqueue_style'   => get_template_directory_uri() . '/blocks/about/about.css',
+			'mode'            => 'preview',
+			'example'         => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'about_top_title' => 'Are You Ready for Change?',
+						'about_title'     => 'About Mary DiOrio (She, Her, Her\'s)',
+						'about_subtitle'  => 'Licensed Psychotherapist • Online Therapy in NY, NJ, OR & FL',
+						'about_content'   => '<p><strong>I wasn\'t always a therapist.</strong></p><p>My first degree was a BA in Business and I worked for the City of Portland.</p>',
+					),
+				),
+			),
+		);
+
+		$about_block_result = acf_register_block_type( $about_block_args );
+
+		if ( function_exists( 'register_block_type' ) && $about_block_result ) {
+			register_block_type(
+				'acf/nt-about-section',
+				array(
+					'render_callback' => 'acf_render_block_callback',
+					'attributes'     => isset( $about_block_result['attributes'] ) ? $about_block_result['attributes'] : array(),
+				)
+			);
+		}
+
+		if ( $about_block_result ) {
+			error_log( 'NISSON THERAPY SUCCESS: About block registered as acf/nt-about-section' );
+		} else {
+			error_log( 'NISSON THERAPY ERROR: Failed to register About block. Check ACF Pro is active.' );
 		}
 	}
 }
