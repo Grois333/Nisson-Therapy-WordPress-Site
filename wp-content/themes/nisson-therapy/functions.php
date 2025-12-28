@@ -254,6 +254,21 @@ function nisson_therapy_scripts() {
 		$theme_version
 	);
 
+	// FAQ block styles and scripts
+	wp_enqueue_style(
+		'nisson-therapy-faq',
+		get_template_directory_uri() . '/blocks/faq/faq.css',
+		array(),
+		$theme_version
+	);
+	wp_enqueue_script(
+		'nisson-therapy-faq',
+		get_template_directory_uri() . '/blocks/faq/faq.js',
+		array(),
+		$theme_version,
+		true
+	);
+
 	// Services block JavaScript
 	wp_enqueue_script(
 		'nisson-therapy-services',
@@ -363,6 +378,14 @@ function nisson_therapy_editor_styles() {
 	wp_enqueue_style(
 		'nisson-therapy-services-content-editor',
 		get_template_directory_uri() . '/blocks/services-content/services-content.css',
+		array(),
+		$theme_version
+	);
+
+	// FAQ block styles in editor
+	wp_enqueue_style(
+		'nisson-therapy-faq-editor',
+		get_template_directory_uri() . '/blocks/faq/faq.css',
 		array(),
 		$theme_version
 	);
@@ -940,6 +963,59 @@ function nisson_therapy_register_acf_blocks() {
 			error_log( 'NISSON THERAPY SUCCESS: Services Content block registered as acf/nt-services-content-section' );
 		} else {
 			error_log( 'NISSON THERAPY ERROR: Failed to register Services Content block. Check ACF Pro is active.' );
+		}
+	}
+
+	// FAQ Block
+	$faq_template_file = get_template_directory() . '/blocks/faq/faq.php';
+	if ( file_exists( $faq_template_file ) ) {
+		$faq_block_args = array(
+			'name'            => 'nt-faq-section',
+			'title'           => __( '❓ FAQ Section', 'nisson-therapy' ),
+			'description'     => __( 'FAQ section with H1 header and accordion-style questions and answers.', 'nisson-therapy' ),
+			'render_template' => $faq_template_file,
+			'category'        => 'nisson-therapy',
+			'icon'            => 'editor-help',
+			'keywords'        => array( 'faq', 'questions', 'answers', 'accordion', 'nisson', 'therapy' ),
+			'supports'        => array(
+				'align' => false,
+				'anchor' => true,
+			),
+			'enqueue_style'   => get_template_directory_uri() . '/blocks/faq/faq.css',
+			'enqueue_script'  => get_template_directory_uri() . '/blocks/faq/faq.js',
+			'mode'            => 'preview',
+			'example'         => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'faq_top_title' => 'Frequently Asked Questions',
+						'faq_items'     => array(
+							array(
+								'question' => 'Is therapy right for me?',
+								'answer'   => '<p>Working with a therapist can help provide insight, support, and new strategies for all types of life challenges.</p>',
+							),
+						),
+					),
+				),
+			),
+		);
+
+		$faq_block_result = acf_register_block_type( $faq_block_args );
+
+		if ( function_exists( 'register_block_type' ) && $faq_block_result ) {
+			register_block_type(
+				'acf/nt-faq-section',
+				array(
+					'render_callback' => 'acf_render_block_callback',
+					'attributes'     => isset( $faq_block_result['attributes'] ) ? $faq_block_result['attributes'] : array(),
+				)
+			);
+		}
+
+		if ( $faq_block_result ) {
+			error_log( 'NISSON THERAPY SUCCESS: FAQ block registered as acf/nt-faq-section' );
+		} else {
+			error_log( 'NISSON THERAPY ERROR: Failed to register FAQ block. Check ACF Pro is active.' );
 		}
 	}
 }

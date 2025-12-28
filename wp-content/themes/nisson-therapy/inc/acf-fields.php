@@ -871,6 +871,97 @@ function nisson_therapy_register_services_content_fields() {
 }
 
 /**
+ * Register FAQ Section ACF Fields
+ */
+function nisson_therapy_register_faq_fields() {
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+		return;
+	}
+
+	acf_add_local_field_group(
+		array(
+			'key'    => 'group_nt_faq_section',
+			'title'  => 'NT FAQ Section Fields',
+			'fields' => array(
+				array(
+					'key'           => 'field_nt_faq_top_title',
+					'label'         => 'Top Section H1 Title',
+					'name'          => 'faq_top_title',
+					'type'          => 'text',
+					'instructions'  => 'Large H1 title displayed at the top of the section (e.g., "Frequently Asked Questions")',
+					'required'      => 0,
+					'default_value' => 'Frequently Asked Questions',
+					'placeholder'   => 'Frequently Asked Questions',
+				),
+				array(
+					'key'           => 'field_nt_faq_top_bg_image',
+					'label'         => 'Top Section Background Image',
+					'name'          => 'faq_top_bg_image',
+					'type'          => 'image',
+					'instructions'  => 'Background image for the top section (will be blurred/overlaid). Recommended size: 1920x800px (or similar wide format). Image will be displayed full-width with cover sizing.',
+					'required'      => 0,
+					'return_format' => 'id',
+					'preview_size'  => 'medium',
+					'library'       => 'all',
+				),
+				array(
+					'key'          => 'field_nt_faq_items',
+					'label'        => 'FAQ Items',
+					'name'         => 'faq_items',
+					'type'         => 'repeater',
+					'instructions' => 'Add FAQ questions and answers. The first item will be opened by default.',
+					'required'     => 0,
+					'layout'       => 'block',
+					'button_label' => 'Add FAQ Item',
+					'sub_fields'   => array(
+						array(
+							'key'           => 'field_nt_faq_item_question',
+							'label'         => 'Question',
+							'name'          => 'question',
+							'type'          => 'text',
+							'instructions'  => 'FAQ question text',
+							'required'      => 1,
+							'default_value' => '',
+							'placeholder'   => 'Is therapy right for me?',
+						),
+						array(
+							'key'           => 'field_nt_faq_item_answer',
+							'label'         => 'Answer',
+							'name'          => 'answer',
+							'type'          => 'wysiwyg',
+							'instructions'  => 'FAQ answer text. You can use bold formatting and other formatting options.',
+							'required'      => 0,
+							'default_value' => '',
+							'tabs'          => 'all',
+							'toolbar'       => 'full',
+							'media_upload'  => 0,
+							'delay'         => 0,
+						),
+					),
+				),
+			),
+			'location' => array(
+				array(
+					array(
+						'param'    => 'block',
+						'operator' => '==',
+						'value'    => 'acf/nt-faq-section',
+					),
+				),
+			),
+			'menu_order'            => 0,
+			'position'              => 'normal',
+			'style'                 => 'default',
+			'label_placement'       => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen'        => '',
+			'active'                => true,
+			'description'           => '',
+		)
+	);
+}
+
+/**
  * Register Header Settings ACF Fields
  */
 function nisson_therapy_register_header_fields() {
@@ -1055,6 +1146,7 @@ function nisson_therapy_register_all_acf_fields() {
 	nisson_therapy_register_services_page_fields();
 	nisson_therapy_register_services_list_fields();
 	nisson_therapy_register_services_content_fields();
+	nisson_therapy_register_faq_fields();
 	nisson_therapy_register_header_fields();
 	nisson_therapy_register_footer_fields();
 }
