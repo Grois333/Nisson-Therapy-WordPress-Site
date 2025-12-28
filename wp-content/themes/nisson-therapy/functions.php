@@ -389,6 +389,14 @@ function nisson_therapy_editor_styles() {
 		array(),
 		$theme_version
 	);
+
+	// Contact block styles in editor
+	wp_enqueue_style(
+		'nisson-therapy-contact-editor',
+		get_template_directory_uri() . '/blocks/contact/contact.css',
+		array(),
+		$theme_version
+	);
 	
 	// Main theme styles in editor (for consistent preview)
 	wp_enqueue_style(
@@ -1016,6 +1024,55 @@ function nisson_therapy_register_acf_blocks() {
 			error_log( 'NISSON THERAPY SUCCESS: FAQ block registered as acf/nt-faq-section' );
 		} else {
 			error_log( 'NISSON THERAPY ERROR: Failed to register FAQ block. Check ACF Pro is active.' );
+		}
+	}
+
+	// Contact Block
+	$contact_template_file = get_template_directory() . '/blocks/contact/contact.php';
+	if ( file_exists( $contact_template_file ) ) {
+		$contact_block_args = array(
+			'name'            => 'nt-contact-section',
+			'title'           => __( '📧 Contact Section', 'nisson-therapy' ),
+			'description'     => __( 'Contact page with H1 header, contact information, and Contact Form 7 integration.', 'nisson-therapy' ),
+			'render_template' => $contact_template_file,
+			'category'        => 'nisson-therapy',
+			'icon'            => 'email-alt',
+			'keywords'        => array( 'contact', 'form', 'email', 'phone', 'nisson', 'therapy' ),
+			'supports'        => array(
+				'align' => false,
+				'anchor' => true,
+			),
+			'enqueue_style'   => get_template_directory_uri() . '/blocks/contact/contact.css',
+			'mode'            => 'preview',
+			'example'         => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'contact_top_title' => 'Connect With Us',
+						'contact_tagline'   => 'You only live once so let\'s make it happen.',
+						'contact_name'      => 'Mary DiOrio LCSW',
+						'contact_title'     => 'Psychotherapist',
+					),
+				),
+			),
+		);
+
+		$contact_block_result = acf_register_block_type( $contact_block_args );
+
+		if ( function_exists( 'register_block_type' ) && $contact_block_result ) {
+			register_block_type(
+				'acf/nt-contact-section',
+				array(
+					'render_callback' => 'acf_render_block_callback',
+					'attributes'     => isset( $contact_block_result['attributes'] ) ? $contact_block_result['attributes'] : array(),
+				)
+			);
+		}
+
+		if ( $contact_block_result ) {
+			error_log( 'NISSON THERAPY SUCCESS: Contact block registered as acf/nt-contact-section' );
+		} else {
+			error_log( 'NISSON THERAPY ERROR: Failed to register Contact block. Check ACF Pro is active.' );
 		}
 	}
 }

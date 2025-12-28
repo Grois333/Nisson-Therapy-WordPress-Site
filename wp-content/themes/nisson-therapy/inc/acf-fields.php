@@ -13,6 +13,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Get Contact Form 7 forms for ACF select field
+ */
+function nisson_therapy_get_cf7_forms() {
+	$forms = array();
+	
+	if ( function_exists( 'wpcf7_contact_form' ) ) {
+		$cf7_forms = get_posts(
+			array(
+				'post_type'      => 'wpcf7_contact_form',
+				'posts_per_page' => -1,
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+			)
+		);
+		
+		foreach ( $cf7_forms as $form ) {
+			$forms[ $form->ID ] = $form->post_title . ' (ID: ' . $form->ID . ')';
+		}
+	}
+	
+	return $forms;
+}
+
+/**
  * Register Hero Block ACF Fields
  */
 function nisson_therapy_register_hero_fields() {
@@ -962,6 +986,162 @@ function nisson_therapy_register_faq_fields() {
 }
 
 /**
+ * Register Contact Section ACF Fields
+ */
+function nisson_therapy_register_contact_fields() {
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+		return;
+	}
+
+	acf_add_local_field_group(
+		array(
+			'key'    => 'group_nt_contact_section',
+			'title'  => 'NT Contact Section Fields',
+			'fields' => array(
+				array(
+					'key'           => 'field_nt_contact_top_title',
+					'label'         => 'Top Section H1 Title',
+					'name'          => 'contact_top_title',
+					'type'          => 'text',
+					'instructions'  => 'Large H1 title displayed at the top of the section (e.g., "Connect With Us")',
+					'required'      => 0,
+					'default_value' => 'Connect With Us',
+					'placeholder'   => 'Connect With Us',
+				),
+				array(
+					'key'           => 'field_nt_contact_top_bg_image',
+					'label'         => 'Top Section Background Image',
+					'name'          => 'contact_top_bg_image',
+					'type'          => 'image',
+					'instructions'  => 'Background image for the top section (will be blurred/overlaid). Recommended size: 1920x800px (or similar wide format). Image will be displayed full-width with cover sizing.',
+					'required'      => 0,
+					'return_format' => 'id',
+					'preview_size'  => 'medium',
+					'library'       => 'all',
+				),
+				array(
+					'key'           => 'field_nt_contact_tagline',
+					'label'         => 'Tagline',
+					'name'          => 'contact_tagline',
+					'type'          => 'text',
+					'instructions'  => 'Tagline displayed below the header (e.g., "You only live once so let\'s make it happen.")',
+					'required'      => 0,
+					'default_value' => 'You only live once so let\'s make it happen.',
+					'placeholder'   => 'You only live once so let\'s make it happen.',
+				),
+				array(
+					'key'           => 'field_nt_contact_name',
+					'label'         => 'Name',
+					'name'          => 'contact_name',
+					'type'          => 'text',
+					'instructions'  => 'Full name (e.g., "Mary DiOrio LCSW")',
+					'required'      => 0,
+					'default_value' => 'Mary DiOrio LCSW',
+					'placeholder'   => 'Mary DiOrio LCSW',
+				),
+				array(
+					'key'           => 'field_nt_contact_title',
+					'label'         => 'Title',
+					'name'          => 'contact_title',
+					'type'          => 'text',
+					'instructions'  => 'Professional title (e.g., "Psychotherapist")',
+					'required'      => 0,
+					'default_value' => 'Psychotherapist',
+					'placeholder'   => 'Psychotherapist',
+				),
+				array(
+					'key'           => 'field_nt_contact_specializations',
+					'label'         => 'Specializations',
+					'name'          => 'contact_specializations',
+					'type'          => 'text',
+					'instructions'  => 'Specializations separated by | (e.g., "Eating Disorders | Anxiety & Depression | Couples Therapy")',
+					'required'      => 0,
+					'default_value' => 'Eating Disorders | Anxiety & Depression | Couples Therapy',
+					'placeholder'   => 'Eating Disorders | Anxiety & Depression | Couples Therapy',
+				),
+				array(
+					'key'           => 'field_nt_contact_phone',
+					'label'         => 'Phone Number',
+					'name'          => 'contact_phone',
+					'type'          => 'text',
+					'instructions'  => 'Phone number (will be converted to clickable link)',
+					'required'      => 0,
+					'default_value' => '503-984-2926',
+					'placeholder'   => '503-984-2926',
+				),
+				array(
+					'key'           => 'field_nt_contact_email',
+					'label'         => 'Email Address',
+					'name'          => 'contact_email',
+					'type'          => 'email',
+					'instructions'  => 'Email address (will be converted to clickable mailto link)',
+					'required'      => 0,
+					'default_value' => 'mary@marydioriolcsw.com',
+					'placeholder'   => 'mary@marydioriolcsw.com',
+				),
+				array(
+					'key'           => 'field_nt_contact_services',
+					'label'         => 'Services Description',
+					'name'          => 'contact_services',
+					'type'          => 'wysiwyg',
+					'instructions'  => 'Description of services offered',
+					'required'      => 0,
+					'default_value' => '',
+					'tabs'          => 'all',
+					'toolbar'       => 'full',
+					'media_upload'  => 0,
+					'delay'         => 0,
+				),
+				array(
+					'key'           => 'field_nt_contact_commitment',
+					'label'         => 'Commitment Statement',
+					'name'          => 'contact_commitment',
+					'type'          => 'wysiwyg',
+					'instructions'  => 'Commitment/inclusivity statement',
+					'required'      => 0,
+					'default_value' => '',
+					'tabs'          => 'all',
+					'toolbar'       => 'full',
+					'media_upload'  => 0,
+					'delay'         => 0,
+				),
+				array(
+					'key'           => 'field_nt_contact_form_id',
+					'label'         => 'Contact Form 7 Form',
+					'name'          => 'contact_form_id',
+					'type'          => 'select',
+					'instructions'  => 'Select a Contact Form 7 form to display',
+					'required'      => 0,
+					'choices'       => nisson_therapy_get_cf7_forms(),
+					'default_value' => '',
+					'allow_null'    => 1,
+					'multiple'      => 0,
+					'ui'            => 0,
+					'return_format' => 'value',
+				),
+			),
+			'location' => array(
+				array(
+					array(
+						'param'    => 'block',
+						'operator' => '==',
+						'value'    => 'acf/nt-contact-section',
+					),
+				),
+			),
+			'menu_order'            => 0,
+			'position'              => 'normal',
+			'style'                 => 'default',
+			'label_placement'       => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen'        => '',
+			'active'                => true,
+			'description'           => '',
+		)
+	);
+}
+
+/**
  * Register Header Settings ACF Fields
  */
 function nisson_therapy_register_header_fields() {
@@ -1147,6 +1327,7 @@ function nisson_therapy_register_all_acf_fields() {
 	nisson_therapy_register_services_list_fields();
 	nisson_therapy_register_services_content_fields();
 	nisson_therapy_register_faq_fields();
+	nisson_therapy_register_contact_fields();
 	nisson_therapy_register_header_fields();
 	nisson_therapy_register_footer_fields();
 }
