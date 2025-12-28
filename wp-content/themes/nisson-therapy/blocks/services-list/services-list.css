@@ -1,0 +1,154 @@
+/**
+ * Services List Block Styles
+ */
+
+.services-list-block {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	background: #326281;
+}
+
+.services-list-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 4rem 2rem;
+	width: 100%;
+}
+
+.services-list-title {
+	font-family: "Poppins", Sans-serif;
+	font-size: 2.5rem;
+	font-weight: 700;
+	color: #fff;
+	text-align: center;
+	margin: 0 0 3rem;
+}
+
+.services-list-items {
+	display: grid;
+	gap: 0;
+}
+
+/* Two columns when no descriptions */
+.services-list-items-no-descriptions {
+	grid-template-columns: repeat(2, 1fr);
+}
+
+/* One column when descriptions exist */
+.services-list-items-with-descriptions {
+	grid-template-columns: 1fr;
+}
+
+.services-list-item {
+	padding: 2rem;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.services-list-item:last-child {
+	border-bottom: none;
+}
+
+.services-list-item-title {
+	font-family: "Poppins", Sans-serif;
+	font-size: 1.5rem;
+	font-weight: 600;
+	color: #fff;
+	margin: 0;
+	line-height: 1.3;
+}
+
+.services-list-items-no-descriptions .services-list-item-title {
+	text-align: center;
+}
+
+.services-list-items-with-descriptions .services-list-item {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 2rem;
+	align-items: start;
+}
+
+.services-list-items-with-descriptions .services-list-item-title {
+	text-align: left;
+}
+
+/* Center the last odd item - works for both modes */
+.services-list-item-centered {
+	grid-template-columns: 1fr !important;
+	justify-items: center;
+	text-align: center;
+}
+
+.services-list-item-centered .services-list-item-title {
+	text-align: center !important;
+	width: 100%;
+}
+
+/* Override for "with descriptions" mode */
+.services-list-items-with-descriptions .services-list-item-centered {
+	grid-template-columns: 1fr !important;
+	justify-items: center;
+}
+
+.services-list-items-with-descriptions .services-list-item-centered .services-list-item-title {
+	text-align: center !important;
+}
+
+/* Override for "no descriptions" mode - make last odd item span full width */
+.services-list-items-no-descriptions .services-list-item-centered {
+	grid-column: 1 / -1;
+	justify-self: center;
+}
+
+.services-list-item-description {
+	font-family: "Poppins", Sans-serif;
+	font-size: 1rem;
+	font-weight: 400;
+	color: #fff;
+	line-height: 1.7;
+	opacity: 0.95;
+}
+
+.services-list-item-description p {
+	margin: 0;
+}
+
+.services-list-item-description p + p {
+	margin-top: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.services-list-container {
+		padding: 3rem 1.5rem;
+	}
+
+	.services-list-title {
+		font-size: 2rem;
+		margin-bottom: 2rem;
+	}
+
+	.services-list-items-no-descriptions {
+		grid-template-columns: 1fr;
+	}
+
+	.services-list-items-with-descriptions .services-list-item {
+		grid-template-columns: 1fr;
+		gap: 1rem;
+	}
+
+	.services-list-item {
+		padding: 1.5rem;
+	}
+
+	.services-list-item-title {
+		font-size: 1.25rem;
+		text-align: left;
+	}
+
+	.services-list-item-description {
+		font-size: 0.9375rem;
+	}
+}
+

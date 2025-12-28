@@ -1,0 +1,125 @@
+/**
+ * Services Content Block Styles
+ */
+
+.services-content-block {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	background: #e8edf0;
+}
+
+.services-content-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 4rem 2rem;
+	width: 100%;
+}
+
+.services-content-wrapper {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 4rem;
+	align-items: start;
+}
+
+.services-content-image-wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.services-content-image {
+	width: 100%;
+	max-width: 400px;
+	height: 400px;
+	object-fit: cover;
+	border-radius: 50%;
+	aspect-ratio: 1 / 1;
+}
+
+.services-content-text-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+.services-content-text {
+	font-family: "Poppins", Sans-serif;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.8;
+	color: #2c3e50;
+}
+
+.services-content-text p {
+	margin: 0 0 1.5rem;
+}
+
+.services-content-text p:last-child {
+	margin-bottom: 0;
+}
+
+.services-content-text strong {
+	font-weight: 600;
+	color: #2c3e50;
+}
+
+.services-content-button-wrapper {
+	margin-top: 1rem;
+}
+
+.services-content-button {
+	font-family: "Poppins", Sans-serif;
+	font-size: 1.125rem;
+	font-weight: 600;
+	color: #fff;
+	background: #326281;
+	padding: 1rem 2.5rem;
+	border-radius: 30px;
+	text-decoration: none;
+	display: inline-block;
+	transition: all 0.3s ease;
+	border: 2px solid #326281;
+}
+
+.services-content-button:hover {
+	background: #2c3e50;
+	border-color: #2c3e50;
+	color: #fff;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.services-content-container {
+		padding: 3rem 1.5rem;
+	}
+
+	.services-content-wrapper {
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+
+	.services-content-image-wrapper {
+		order: -1;
+	}
+
+	.services-content-image {
+		max-width: 300px;
+		height: 300px;
+	}
+
+	.services-content-text {
+		font-size: 0.9375rem;
+	}
+
+	.services-content-button {
+		font-size: 1rem;
+		padding: 0.875rem 2rem;
+		width: 100%;
+		text-align: center;
+	}
+}
+

@@ -342,6 +342,30 @@ function nisson_therapy_editor_styles() {
 		array(),
 		$theme_version
 	);
+
+	// Services Page block styles in editor
+	wp_enqueue_style(
+		'nisson-therapy-services-page-editor',
+		get_template_directory_uri() . '/blocks/services-page/services-page.css',
+		array(),
+		$theme_version
+	);
+
+	// Services List block styles in editor
+	wp_enqueue_style(
+		'nisson-therapy-services-list-editor',
+		get_template_directory_uri() . '/blocks/services-list/services-list.css',
+		array(),
+		$theme_version
+	);
+
+	// Services Content block styles in editor
+	wp_enqueue_style(
+		'nisson-therapy-services-content-editor',
+		get_template_directory_uri() . '/blocks/services-content/services-content.css',
+		array(),
+		$theme_version
+	);
 	
 	// Main theme styles in editor (for consistent preview)
 	wp_enqueue_style(
@@ -763,6 +787,159 @@ function nisson_therapy_register_acf_blocks() {
 			error_log( 'NISSON THERAPY SUCCESS: CTA Image block registered as acf/nt-cta-image-section' );
 		} else {
 			error_log( 'NISSON THERAPY ERROR: Failed to register CTA Image block. Check ACF Pro is active.' );
+		}
+	}
+
+	// Services Page Block
+	$services_page_template_file = get_template_directory() . '/blocks/services-page/services-page.php';
+	if ( file_exists( $services_page_template_file ) ) {
+		$services_page_block_args = array(
+			'name'            => 'nt-services-page-section',
+			'title'           => __( '📄 Services Page', 'nisson-therapy' ),
+			'description'     => __( 'Services page with H1 header and content section (WYSIWYG with bold text and bullet points).', 'nisson-therapy' ),
+			'render_template' => $services_page_template_file,
+			'category'        => 'nisson-therapy',
+			'icon'            => 'admin-page',
+			'keywords'        => array( 'services', 'page', 'content', 'wysiwyg', 'nisson', 'therapy' ),
+			'supports'        => array(
+				'align' => false,
+				'anchor' => true,
+			),
+			'enqueue_style'   => get_template_directory_uri() . '/blocks/services-page/services-page.css',
+			'mode'            => 'preview',
+			'example'         => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'services_top_title' => 'Learn to tame Anxiety',
+						'services_content'   => '<h2>Learn to understand your emotions, soothe your nervous system, and move through life with greater confidence and clarity.</h2><p>Anxiety can make even the simplest moments feel overwhelming.</p>',
+					),
+				),
+			),
+		);
+
+		$services_page_block_result = acf_register_block_type( $services_page_block_args );
+
+		if ( function_exists( 'register_block_type' ) && $services_page_block_result ) {
+			register_block_type(
+				'acf/nt-services-page-section',
+				array(
+					'render_callback' => 'acf_render_block_callback',
+					'attributes'     => isset( $services_page_block_result['attributes'] ) ? $services_page_block_result['attributes'] : array(),
+				)
+			);
+		}
+
+		if ( $services_page_block_result ) {
+			error_log( 'NISSON THERAPY SUCCESS: Services Page block registered as acf/nt-services-page-section' );
+		} else {
+			error_log( 'NISSON THERAPY ERROR: Failed to register Services Page block. Check ACF Pro is active.' );
+		}
+	}
+
+	// Services List Block
+	$services_list_template_file = get_template_directory() . '/blocks/services-list/services-list.php';
+	if ( file_exists( $services_list_template_file ) ) {
+		$services_list_block_args = array(
+			'name'            => 'nt-services-list-section',
+			'title'           => __( '📋 Services List', 'nisson-therapy' ),
+			'description'     => __( 'List of services/therapies with optional descriptions. Shows 2 per row if no descriptions, 1 per row if descriptions exist.', 'nisson-therapy' ),
+			'render_template' => $services_list_template_file,
+			'category'        => 'nisson-therapy',
+			'icon'            => 'list-view',
+			'keywords'        => array( 'services', 'list', 'therapies', 'practices', 'nisson', 'therapy' ),
+			'supports'        => array(
+				'align' => false,
+				'anchor' => true,
+			),
+			'enqueue_style'   => get_template_directory_uri() . '/blocks/services-list/services-list.css',
+			'mode'            => 'preview',
+			'example'         => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'services_list_title' => 'Therapies & Practices I use to help you',
+						'services_list_items' => array(
+							array(
+								'title'       => 'Cognitive Behavioral Therapy (CBT)',
+								'description' => '',
+							),
+							array(
+								'title'       => 'Emotion Focused Therapy (EFT)',
+								'description' => '',
+							),
+						),
+					),
+				),
+			),
+		);
+
+		$services_list_block_result = acf_register_block_type( $services_list_block_args );
+
+		if ( function_exists( 'register_block_type' ) && $services_list_block_result ) {
+			register_block_type(
+				'acf/nt-services-list-section',
+				array(
+					'render_callback' => 'acf_render_block_callback',
+					'attributes'     => isset( $services_list_block_result['attributes'] ) ? $services_list_block_result['attributes'] : array(),
+				)
+			);
+		}
+
+		if ( $services_list_block_result ) {
+			error_log( 'NISSON THERAPY SUCCESS: Services List block registered as acf/nt-services-list-section' );
+		} else {
+			error_log( 'NISSON THERAPY ERROR: Failed to register Services List block. Check ACF Pro is active.' );
+		}
+	}
+
+	// Services Content Block
+	$services_content_template_file = get_template_directory() . '/blocks/services-content/services-content.php';
+	if ( file_exists( $services_content_template_file ) ) {
+		$services_content_block_args = array(
+			'name'            => 'nt-services-content-section',
+			'title'           => __( '👤 Services Content', 'nisson-therapy' ),
+			'description'     => __( 'Content section with image on left, text on right, and CTA button.', 'nisson-therapy' ),
+			'render_template' => $services_content_template_file,
+			'category'        => 'nisson-therapy',
+			'icon'            => 'admin-users',
+			'keywords'        => array( 'services', 'content', 'image', 'text', 'cta', 'nisson', 'therapy' ),
+			'supports'        => array(
+				'align' => false,
+				'anchor' => true,
+			),
+			'enqueue_style'   => get_template_directory_uri() . '/blocks/services-content/services-content.css',
+			'mode'            => 'preview',
+			'example'         => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'services_content_text' => '<p>Mary DiOrio is a licensed psychotherapist specializing in depression and anxiety treatment.</p>',
+						'services_content_button' => array(
+							'url'   => '#',
+							'title' => 'Schedule A Free 15 Minute Consultation',
+						),
+					),
+				),
+			),
+		);
+
+		$services_content_block_result = acf_register_block_type( $services_content_block_args );
+
+		if ( function_exists( 'register_block_type' ) && $services_content_block_result ) {
+			register_block_type(
+				'acf/nt-services-content-section',
+				array(
+					'render_callback' => 'acf_render_block_callback',
+					'attributes'     => isset( $services_content_block_result['attributes'] ) ? $services_content_block_result['attributes'] : array(),
+				)
+			);
+		}
+
+		if ( $services_content_block_result ) {
+			error_log( 'NISSON THERAPY SUCCESS: Services Content block registered as acf/nt-services-content-section' );
+		} else {
+			error_log( 'NISSON THERAPY ERROR: Failed to register Services Content block. Check ACF Pro is active.' );
 		}
 	}
 }

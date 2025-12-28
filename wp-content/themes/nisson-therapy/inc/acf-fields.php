@@ -79,7 +79,7 @@ function nisson_therapy_register_hero_fields() {
 					'label'         => 'Background Image',
 					'name'          => 'background_image',
 					'type'          => 'image',
-					'instructions'  => 'Background image for the hero section',
+					'instructions'  => 'Background image for the hero section. Recommended size: 1920x1080px (or similar 16:9 ratio). Image will be displayed full-width with cover sizing.',
 					'required'      => 0,
 					'return_format' => 'id',
 					'preview_size'  => 'medium',
@@ -156,7 +156,7 @@ function nisson_therapy_register_intro_fields() {
 					'label'         => 'Image',
 					'name'          => 'intro_image',
 					'type'          => 'image',
-					'instructions'  => 'Circular headshot image displayed on the left side',
+					'instructions'  => 'Circular headshot image displayed on the left side. Recommended size: 600x600px (square, 1:1 ratio). Image will be cropped to a circle.',
 					'required'      => 0,
 					'return_format' => 'id',
 					'preview_size'  => 'medium',
@@ -248,7 +248,7 @@ function nisson_therapy_register_services_fields() {
 							'label'         => 'Background Image',
 							'name'          => 'background_image',
 							'type'          => 'image',
-							'instructions'  => 'Background image for the card',
+							'instructions'  => 'Background image for the card. Recommended size: 800x600px (or similar 4:3 ratio). Image will be displayed with cover sizing and blur effect.',
 							'required'      => 0,
 							'return_format' => 'id',
 							'preview_size'  => 'medium',
@@ -389,7 +389,7 @@ function nisson_therapy_register_about_fields() {
 					'label'         => 'Top Section Background Image',
 					'name'          => 'about_top_bg_image',
 					'type'          => 'image',
-					'instructions'  => 'Background image for the top section (will be blurred/overlaid)',
+					'instructions'  => 'Background image for the top section (will be blurred/overlaid). Recommended size: 1920x800px (or similar wide format). Image will be displayed full-width with cover sizing.',
 					'required'      => 0,
 					'return_format' => 'id',
 					'preview_size'  => 'medium',
@@ -433,7 +433,7 @@ function nisson_therapy_register_about_fields() {
 					'label'         => 'Image',
 					'name'          => 'about_image',
 					'type'          => 'image',
-					'instructions'  => 'Circular headshot image displayed on the right side',
+					'instructions'  => 'Circular headshot image displayed on the right side. Recommended size: 600x600px (square, 1:1 ratio). Image will be cropped to a circle.',
 					'required'      => 0,
 					'return_format' => 'id',
 					'preview_size'  => 'medium',
@@ -597,7 +597,7 @@ function nisson_therapy_register_cta_image_fields() {
 					'label'         => 'Background Image',
 					'name'          => 'cta_image_bg',
 					'type'          => 'image',
-					'instructions'  => 'Background image for the CTA section (will have a dark overlay)',
+					'instructions'  => 'Background image for the CTA section (will have a dark overlay). Recommended size: 1920x800px (or similar wide format). Image will be displayed full-width with cover sizing.',
 					'required'      => 1,
 					'return_format' => 'id',
 					'preview_size'  => 'medium',
@@ -629,6 +629,232 @@ function nisson_therapy_register_cta_image_fields() {
 						'param'    => 'block',
 						'operator' => '==',
 						'value'    => 'acf/nt-cta-image-section',
+					),
+				),
+			),
+			'menu_order'            => 0,
+			'position'              => 'normal',
+			'style'                 => 'default',
+			'label_placement'       => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen'        => '',
+			'active'                => true,
+			'description'           => '',
+		)
+	);
+}
+
+/**
+ * Register Services Page Section ACF Fields
+ */
+function nisson_therapy_register_services_page_fields() {
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+		return;
+	}
+
+	acf_add_local_field_group(
+		array(
+			'key'    => 'group_nt_services_page_section',
+			'title'  => 'NT Services Page Section Fields',
+			'fields' => array(
+				array(
+					'key'           => 'field_nt_services_page_top_title',
+					'label'         => 'Top Section H1 Title',
+					'name'          => 'services_top_title',
+					'type'          => 'text',
+					'instructions'  => 'Large H1 title displayed at the top of the section (e.g., "Learn to tame Anxiety")',
+					'required'      => 0,
+					'default_value' => 'Learn to tame Anxiety',
+					'placeholder'   => 'Learn to tame Anxiety',
+				),
+				array(
+					'key'           => 'field_nt_services_page_top_bg_image',
+					'label'         => 'Top Section Background Image',
+					'name'          => 'services_top_bg_image',
+					'type'          => 'image',
+					'instructions'  => 'Background image for the top section (will be blurred/overlaid). Recommended size: 1920x800px (or similar wide format). Image will be displayed full-width with cover sizing.',
+					'required'      => 0,
+					'return_format' => 'id',
+					'preview_size'  => 'medium',
+					'library'       => 'all',
+				),
+				array(
+					'key'           => 'field_nt_services_page_content',
+					'label'         => 'Content',
+					'name'          => 'services_content',
+					'type'          => 'wysiwyg',
+					'instructions'  => 'Main content text. You can use bold formatting, headings (H2, H3), bullet points, and other formatting options.',
+					'required'      => 0,
+					'default_value' => '',
+					'tabs'          => 'all',
+					'toolbar'       => 'full',
+					'media_upload'  => 0,
+					'delay'         => 0,
+				),
+				array(
+					'key'           => 'field_nt_services_page_button',
+					'label'         => 'Button',
+					'name'          => 'services_button',
+					'type'          => 'link',
+					'instructions'  => 'Optional call-to-action button link (e.g., "Schedule A Free 15 Minute Consultation")',
+					'required'      => 0,
+					'return_format' => 'array',
+				),
+			),
+			'location' => array(
+				array(
+					array(
+						'param'    => 'block',
+						'operator' => '==',
+						'value'    => 'acf/nt-services-page-section',
+					),
+				),
+			),
+			'menu_order'            => 0,
+			'position'              => 'normal',
+			'style'                 => 'default',
+			'label_placement'       => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen'        => '',
+			'active'                => true,
+			'description'           => '',
+		)
+	);
+}
+
+/**
+ * Register Services List Section ACF Fields
+ */
+function nisson_therapy_register_services_list_fields() {
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+		return;
+	}
+
+	acf_add_local_field_group(
+		array(
+			'key'    => 'group_nt_services_list_section',
+			'title'  => 'NT Services List Section Fields',
+			'fields' => array(
+				array(
+					'key'           => 'field_nt_services_list_title',
+					'label'         => 'Section Title',
+					'name'          => 'services_list_title',
+					'type'          => 'text',
+					'instructions'  => 'Main title for the services list section (e.g., "Therapies & Practices I use to help you")',
+					'required'      => 0,
+					'default_value' => 'Therapies & Practices I use to help you',
+					'placeholder'   => 'Therapies & Practices I use to help you',
+				),
+				array(
+					'key'          => 'field_nt_services_list_items',
+					'label'        => 'Services Items',
+					'name'         => 'services_list_items',
+					'type'         => 'repeater',
+					'instructions' => 'Add services/therapies. If you add description text, items will display one per row. If no descriptions, items will display two per row.',
+					'required'     => 0,
+					'layout'       => 'block',
+					'button_label' => 'Add Service',
+					'sub_fields'   => array(
+						array(
+							'key'           => 'field_nt_services_list_item_title',
+							'label'         => 'Title',
+							'name'          => 'title',
+							'type'          => 'text',
+							'instructions'  => 'Service/therapy title (e.g., "Cognitive Behavioral Therapy (CBT)")',
+							'required'      => 1,
+							'default_value' => '',
+							'placeholder'   => 'Cognitive Behavioral Therapy (CBT)',
+						),
+						array(
+							'key'           => 'field_nt_services_list_item_description',
+							'label'         => 'Description',
+							'name'          => 'description',
+							'type'          => 'wysiwyg',
+							'instructions'  => 'Optional description text. If provided, this item will display one per row. If left empty, items will display two per row.',
+							'required'      => 0,
+							'default_value' => '',
+							'tabs'          => 'all',
+							'toolbar'       => 'full',
+							'media_upload'  => 0,
+							'delay'         => 0,
+						),
+					),
+				),
+			),
+			'location' => array(
+				array(
+					array(
+						'param'    => 'block',
+						'operator' => '==',
+						'value'    => 'acf/nt-services-list-section',
+					),
+				),
+			),
+			'menu_order'            => 0,
+			'position'              => 'normal',
+			'style'                 => 'default',
+			'label_placement'       => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen'        => '',
+			'active'                => true,
+			'description'           => '',
+		)
+	);
+}
+
+/**
+ * Register Services Content Section ACF Fields
+ */
+function nisson_therapy_register_services_content_fields() {
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+		return;
+	}
+
+	acf_add_local_field_group(
+		array(
+			'key'    => 'group_nt_services_content_section',
+			'title'  => 'NT Services Content Section Fields',
+			'fields' => array(
+				array(
+					'key'           => 'field_nt_services_content_image',
+					'label'         => 'Image',
+					'name'          => 'services_content_image',
+					'type'          => 'image',
+					'instructions'  => 'Circular headshot image displayed on the left side. Recommended size: 600x600px (square, 1:1 ratio). Image will be cropped to a circle.',
+					'required'      => 0,
+					'return_format' => 'id',
+					'preview_size'  => 'medium',
+					'library'       => 'all',
+				),
+				array(
+					'key'           => 'field_nt_services_content_text',
+					'label'         => 'Content',
+					'name'          => 'services_content_text',
+					'type'          => 'wysiwyg',
+					'instructions'  => 'Text content displayed on the right side. You can use bold formatting and other formatting options.',
+					'required'      => 0,
+					'default_value' => '',
+					'tabs'          => 'all',
+					'toolbar'       => 'full',
+					'media_upload'  => 0,
+					'delay'         => 0,
+				),
+				array(
+					'key'           => 'field_nt_services_content_button',
+					'label'         => 'Button',
+					'name'          => 'services_content_button',
+					'type'          => 'link',
+					'instructions'  => 'Call-to-action button link (e.g., "Schedule A Free 15 Minute Consultation")',
+					'required'      => 0,
+					'return_format' => 'array',
+				),
+			),
+			'location' => array(
+				array(
+					array(
+						'param'    => 'block',
+						'operator' => '==',
+						'value'    => 'acf/nt-services-content-section',
 					),
 				),
 			),
@@ -716,7 +942,7 @@ function nisson_therapy_register_footer_fields() {
 					'label'         => 'Footer Logo',
 					'name'          => 'footer_logo_image',
 					'type'          => 'image',
-					'instructions'  => 'Logo to display in the footer',
+					'instructions'  => 'Logo to display in the footer. Recommended size: 200x100px (or similar 2:1 ratio). PNG with transparent background preferred.',
 					'required'      => 0,
 					'return_format' => 'id',
 					'preview_size'  => 'medium',
@@ -826,6 +1052,9 @@ function nisson_therapy_register_all_acf_fields() {
 	nisson_therapy_register_about_fields();
 	nisson_therapy_register_approach_fields();
 	nisson_therapy_register_cta_image_fields();
+	nisson_therapy_register_services_page_fields();
+	nisson_therapy_register_services_list_fields();
+	nisson_therapy_register_services_content_fields();
 	nisson_therapy_register_header_fields();
 	nisson_therapy_register_footer_fields();
 }
