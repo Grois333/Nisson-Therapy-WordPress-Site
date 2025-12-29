@@ -174,6 +174,7 @@ body {
 	color: #2c3e50;
 	border-radius: 25px;
 	margin-left: 1rem;
+	margin-right: 2rem;
 	font-family: "Poppins", Sans-serif;
 	font-weight: 600;
 	font-size: 1rem;
@@ -238,8 +239,41 @@ body {
 }
 
 .header-cta {
-	flex: 0 0 auto;
-	margin-left: auto;
+	position: absolute;
+	right: 0;
+	display: flex;
+	align-items: center;
+	gap: 2rem;
+	flex-wrap: nowrap;
+	z-index: 20;
+}
+
+.header-cta .btn-primary,
+.header-cta .header-cta-button {
+	margin-right: 0 !important;
+	flex-shrink: 0;
+	order: 1;
+	display: inline-block;
+	position: relative;
+	white-space: nowrap;
+	margin-right: 2rem;
+}
+
+.header-hebrew-text {
+	font-family: "Poppins", Sans-serif;
+	font-size: 1rem;
+	color: #2c3e50;
+	display: inline-block;
+	white-space: nowrap;
+	flex-shrink: 0;
+	line-height: 1;
+	margin-left: 0;
+	order: 2;
+	position: relative;
+}
+
+.header-hebrew-text strong {
+	font-weight: 700;
 }
 
 .btn-primary {
@@ -255,6 +289,7 @@ body {
 	font-size: 1rem;
 	transition: all 0.3s ease;
 	white-space: nowrap;
+	flex-shrink: 0;
 }
 
 .btn-primary:hover {
@@ -694,7 +729,14 @@ footer .site-info {
 	}
 
 	.header-cta {
-		display: none;
+		top: 0;
+		position: absolute;
+		right: 36px;
+		/* margin: 0; */
+		justify-content: flex-end;
+		display: flex;
+		width: auto;
+		margin-top: 0;
 	}
 }
 

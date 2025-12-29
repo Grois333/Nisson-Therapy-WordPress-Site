@@ -75,20 +75,21 @@
 			?>
 		</nav>
 
-		<?php
-		// Get CTA button from ACF options if set
-		$cta_text = get_field( 'header_cta_text', 'option' );
-		$cta_link = get_field( 'header_cta_link', 'option' );
-		if ( $cta_text && $cta_link ) {
-			?>
-			<div class="header-cta">
-				<a href="<?php echo esc_url( $cta_link ); ?>" class="btn btn-primary">
+		<div class="header-cta">
+			<?php
+			// Get CTA button from ACF options if set
+			$cta_text = get_field( 'header_cta_text', 'option' );
+			$cta_link = get_field( 'header_cta_link', 'option' );
+			if ( $cta_text && $cta_link ) {
+				?>
+				<a href="<?php echo esc_url( $cta_link ); ?>" class="btn btn-primary header-cta-button">
 					<?php echo esc_html( $cta_text ); ?>
 				</a>
-			</div>
-			<?php
-		}
-		?>
+				<?php
+			}
+			?>
+			<span class="header-hebrew-text" dir="rtl"><strong>בס"ד</strong></span>
+		</div>
 	</div>
 </header>
 
